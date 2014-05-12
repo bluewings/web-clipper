@@ -1,0 +1,23 @@
+$default-font: Nanum Gothic, AppleGothic, sans-serif;
+$default-font-size: 12px;
+
+$header-font: Play;
+
+@import url(//fonts.googleapis.com/earlyaccess/nanumgothic.css);
+
+body {
+    padding: 0;
+    margin: 0;
+    word-break: break-all;
+    font-family: $default-font;
+    font-size: $default-font-size;
+}
+
+a {
+    color: #00B7FF;
+}
+
+.navbar {
+    font-family: $header-font;
+    min-height: 0;
+}

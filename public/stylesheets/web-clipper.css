@@ -1,0 +1,16 @@
+@import url(//fonts.googleapis.com/earlyaccess/nanumgothic.css);
+body {
+  padding: 0;
+  margin: 0;
+  word-break: break-all;
+  font-family: Nanum Gothic, AppleGothic, sans-serif;
+  font-size: 12px; }
+
+a {
+  color: #00B7FF; }
+
+.navbar {
+  font-family: Play;
+  min-height: 0; }
+
+/*# sourceMappingURL=web-clipper.css.map */

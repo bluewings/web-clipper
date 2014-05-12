@@ -1,0 +1,6 @@
+{
+"version": 3,
+"mappings": "AAKQ,+DAAuD;AAE/D,IAAK;EACD,OAAO,EAAE,CAAC;EACV,MAAM,EAAE,CAAC;EACT,UAAU,EAAE,SAAS;EACrB,WAAW,EAXA,qCAAY;EAYvB,SAAS,EAXO,IAAI;;AAcxB,CAAE;EACE,KAAK,EAAE,OAAO;;AAGlB,OAAQ;EACJ,WAAW,EAjBD,IAAI;EAkBd,UAAU,EAAE,CAAC",
+"sources": ["web-clipper.scss"],
+"file": "web-clipper.css"
+}
