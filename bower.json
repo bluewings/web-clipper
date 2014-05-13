@@ -1,6 +1,7 @@
 {
-  "name": "clipping",
+  "name": "web-clipper",
   "version": "0.0.0",
+  "homepage": "https://github.com/bluewings/web-clipper",
   "authors": [
     "Albert Cha <mygenie3@naver.com>"
   ],
@@ -13,10 +14,11 @@
     "tests"
   ],
   "dependencies": {
-    "html2canvas": "~0.4.1",
     "angular-bootstrap": "~0.11.0",
+    "angular-sanitize": "~1.2.16",
     "bootstrap": "~3.1.1",
+    "html2canvas": "~0.4.1",
     "jquery-ui": "~1.10.4",
-    "angular-sanitize": "~1.2.16"
+    "rangy-1.3": "*"
   }
 }
