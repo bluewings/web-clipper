@@ -64,6 +64,8 @@
         });
     }
 
+    var selections = [];
+
 
 
 
@@ -96,23 +98,28 @@
         $(document.body).on('mouseup', function () {
 
 
-            console.log('mouseup');
-            console.log(rangy);
+
+
+            //console.log('mouseup');
+            //console.log(rangy);
             if (!status.useMarker) {
                 return;
 
             }
 
-            console.log(rangy.getSelection().getRangeAt(0).toString());
+            var range = rangy.getSelection().getRangeAt(0);
+            //console.log('>>> range toString');
+            //console.log(rangy.getSelection().getRangeAt(0).toString());
+            console.log('>>> range at 0');
             console.log(rangy.getSelection().getRangeAt(0));
 
-            console.log(rangy.getSelection().getRangeAt(0));
+            //console.log(rangy.getSelection().getRangeAt(0));
 
             var sel = rangy.getSelection().getRangeAt(0);
 
-            console.log('>>> client rects');
+            //console.log('>>> client rects');
 
-            console.log(sel.nativeRange.getClientRects());
+            //console.log(sel.nativeRange.getClientRects());
 
             var rectList = sel.nativeRange.getClientRects();
             var div;
@@ -121,6 +128,32 @@
                 scrollLeft = $(window).scrollLeft();
 
             var rect;
+
+            var data = {
+                text: range.toString(),
+                fullText: range.commonAncestorContainer.textContent,
+                startText: range.startContainer.textContent,
+                endText: range.endContainer.textContent,
+                rects: rectList
+
+            };
+
+            data.fullText = data.fullText.split(data.startText);
+            //console.log();
+            data.fullText.shift();
+            data.fullText = data.startText + data.fullText.join('');
+            data.fullText = data.fullText.split(data.endText);
+            data.fullText.pop();
+            data.fullText = data.fullText.join('') + data.endText;
+
+            selections.push(data);
+
+            console.log('>>> SELECTIONS');
+            console.log(selections);
+
+
+
+            //var rects = [];
 
             for (var inx = 0; inx < rectList.length; inx++) {
 
@@ -139,15 +172,18 @@
                         backgroundColor: 'rgba(255,0,0,0.1)'
 
                     });
+
+
+                    
                 }
 
 
 
             }
 
-            console.log('>>> bounding rect');
+            //console.log('>>> bounding rect');
 
-            console.log(sel.nativeRange.getBoundingClientRect());
+            //console.log(sel.nativeRange.getBoundingClientRect());
 
             var rect = sel.nativeRange.getBoundingClientRect()
 
