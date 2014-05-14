@@ -2,194 +2,110 @@
 
     'use strict';
 
-    var $, view, status, templates = {},
-        app;
+    var view = {};
 
-    var URL, HTML;
-
-    var SUCCESS = 200;
-
-    status = {
-        useMarker: false
+    var HTML = {
+        CONTAINER: ' ' +
+            '<div style="position:fixed;top:10px;right:10px;z-index:1000;"> ' +
+            '<button class="btn-summarize" style="padding:10px;">clip</button> ' +
+            '<button class="btn-clip" style="padding:10px;">cut</button> ' +
+            '</div>'
     };
 
-    URL = {
+    var $;
 
-        TEMPLATE: 'http://10.64.51.102:2000/template/widget'
+    function loadScripts(srcList, callback) {
 
-    };
+        var inx, scripts = [],
+            script;
 
+        if (typeof srcList == 'string') {
+            srcList = [srcList];
+        }
 
-    var selections = [];
+        for (inx = 0; inx < srcList.length; inx++) {
 
-    function initialize() {
+            script = document.createElement('SCRIPT');
+            scripts.push(script);
+            script.onload = function () {
 
-        rangy.init();
+                var ready = true,
+                    inx;
 
-        initView(function () {
+                this.__ready = true;
 
-            initNgModule(view.container);
-            attachEvtHandler();
-        });
-    }
+                for (inx = 0; inx < scripts.length; inx++) {
 
-    function initView(callback) {
-
-        view = {
-            container: null
-        };
-
-        $.ajax({
-            url: URL.TEMPLATE,
-            dataType: 'jsonp',
-            jsonp: 'callback',
-            success: function (data) {
-
-                if (data.code === SUCCESS) {
-                    view.container = document.createElement('div');
-                    view.container.innerHTML = data.result.template;
-                    document.body.appendChild(view.container);
-                    if (callback && typeof callback == 'function') {
-                        callback(view.container);
+                    if (!scripts[inx].__ready) {
+                        ready = false;
+                        break;
                     }
+
                 }
-            }
-        });
-    }
 
-    function initNgModule(elen) {
-
-        app = angular.module('web-clipper-widget', []);
-
-        app.service('clipper', function () {
-
-            var service;
-
-            function getInfo(elem, selectors) {
-
-                var search;
-
-                do {
-                    search = elem.find(selectors.shift());
-                } while (search && search.size() === 0);
-
-                if (search.size() > 0) {
-                    return $.trim(search.attr('content') ? search.attr('content') : search.text());
-                } else {
-                    return '';
+                if (ready && callback && typeof callback == 'function') {
+                    callback();
                 }
-            }
 
-            service = {
-                summarize: function (elem) {
+                console.dir('ready = ' + ready);
 
-                    elem = elem ? elem : $('html');
-                    return {
-                        location: location.href,
-                        title: getInfo(elem, ['meta[property="og:title"]', 'meta[property="twitter:title"]', 'title']),
-                        desc: getInfo(elem, ['meta[property="og:description"]', 'meta[property="twitter:description"]', 'p']),
-                        thumb: getInfo(elem, ['meta[property="og:image"]', 'meta[property="twitter:image:src"]', 'meta[property="twitter:image"]', 'image'])
-                    };
-                }
-            };
-
-            return service;
-        });
-
-        app.controller('clipper-main', function ($scope, $element, $http, clipper) {
-
-            $scope.data = {
-
-                showWidget: true,
-                useMarker: status.useMarker,
-                data: clipper.summarize()
-            };
-
-            $http.jsonp('http://127.0.0.1:2000/proxy/image/test?callback=JSON_CALLBACK').success(function(data) {
-
-                console.log(data);
-
-                var img = document.createElement('img');
-
-                img.src = data.result.image;
-
-                $(document.body).append(img);
-
-            });
-
-            $scope.$watch('data.useMarker', function (after, before) {
-
-                status.useMarker = after;
-                if (status.useMarker) {
-                    $(document.body).addClass('use-marker');
-                } else {
-                    $(document.body).removeClass('use-marker');
-                }
-            });
-
-            $scope.func = {
-                toggleMarker: function () {
-
-                    $scope.data.useMarker = $scope.data.useMarker ? false : true;
-                }
-            };
-
-            $(document.body).on('dblclick', function (event) {
+                //console.log(this.complete);
 
                 return;
 
-                $scope.$apply(function () {
-                    $scope.data.showWidget = $scope.data.showWidget ? false : true;
-                });
-                event.preventDefault();
-            });
-        });
 
-        angular.bootstrap(elen, ['web-clipper-widget']);
+                if (callback && typeof callback == 'function') {
+                    callback();
+                }
+            };
+            script.type = 'text/javascript';
+            script.src = srcList[inx];
+            document.body.appendChild(script);
+        }
+
+
+
+
+
+
+
+
+
+
     }
 
-    function attachEvtHandler() {
-
-    }
-
-    function __trash() {
 
 
-
-        //initNgModule();
-
-        return;
+    function initialize() {
 
         initView();
 
         console.log('initialize');
 
+        rangy.init();
+
+        // Enable multiple selections in IE
+        try {
+            document.execCommand("MultipleSelection", true, true);
+        } catch (ex) {}
 
 
         $(document.body).on('mouseup', function () {
 
 
+            console.log('mouseup');
+            console.log(rangy);
 
-            //console.log('mouseup');
-            //console.log(rangy);
-            if (!status.useMarker) {
-                return;
-
-            }
-
-            var range = rangy.getSelection().getRangeAt(0);
-            //console.log('>>> range toString');
-            //console.log(rangy.getSelection().getRangeAt(0).toString());
-            console.log('>>> range at 0');
+            console.log(rangy.getSelection().getRangeAt(0).toString());
             console.log(rangy.getSelection().getRangeAt(0));
 
-            //console.log(rangy.getSelection().getRangeAt(0));
+            console.log(rangy.getSelection().getRangeAt(0));
 
             var sel = rangy.getSelection().getRangeAt(0);
 
-            //console.log('>>> client rects');
+            console.log('>>> client rects');
 
-            //console.log(sel.nativeRange.getClientRects());
+            console.log(sel.nativeRange.getClientRects());
 
             var rectList = sel.nativeRange.getClientRects();
             var div;
@@ -198,32 +114,6 @@
                 scrollLeft = $(window).scrollLeft();
 
             var rect;
-
-            var data = {
-                text: range.toString(),
-                fullText: range.commonAncestorContainer.textContent,
-                startText: range.startContainer.textContent,
-                endText: range.endContainer.textContent,
-                rects: rectList
-
-            };
-
-            data.fullText = data.fullText.split(data.startText);
-            //console.log();
-            data.fullText.shift();
-            data.fullText = data.startText + data.fullText.join('');
-            data.fullText = data.fullText.split(data.endText);
-            data.fullText.pop();
-            data.fullText = data.fullText.join('') + data.endText;
-
-            selections.push(data);
-
-            console.log('>>> SELECTIONS');
-            console.log(selections);
-
-
-
-            //var rects = [];
 
             for (var inx = 0; inx < rectList.length; inx++) {
 
@@ -242,18 +132,15 @@
                         backgroundColor: 'rgba(255,0,0,0.1)'
 
                     });
-
-
-
                 }
 
 
 
             }
 
-            //console.log('>>> bounding rect');
+            console.log('>>> bounding rect');
 
-            //console.log(sel.nativeRange.getBoundingClientRect());
+            console.log(sel.nativeRange.getBoundingClientRect());
 
             var rect = sel.nativeRange.getBoundingClientRect()
 
@@ -272,10 +159,6 @@
 
                 });
             }
-
-
-            rangy.getSelection().collapseToEnd();
-            //alert('collapse');
 
             //getClientRects
 
@@ -307,9 +190,26 @@
 
 
 
+
     }
 
+    function initView() {
 
+        view = {
+            container: $(HTML.CONTAINER),
+            button: {
+                summarize: null,
+                clip: null
+            }
+
+        };
+
+        $(document.body).append(view.container);
+
+        view.button.summarize = view.container.find('button.btn-summarize');
+        view.button.clip = view.container.find('button.btn-clip');
+
+    }
 
     function attachEventHandler() {
 
@@ -394,6 +294,7 @@
 
 
 
+
         });
 
 
@@ -456,9 +357,11 @@
 
 
 
+
             }
 
             console.log(tags);
+
 
 
 
@@ -476,6 +379,53 @@
 
     }
 
+    function searchElem(elem, selectors) {
+
+        var search;
+
+
+        do {
+            search = elem.find(selectors.shift());
+        } while (search && search.size() === 0);
+
+        if (search.size() > 0) {
+            return search.attr('content');
+        } else {
+            return '';
+        }
+
+    }
+
+    function _title(elem) {
+
+        var title = searchElem(elem, ['meta[property="og:title"]', 'meta[property="twitter:title"]', 'title']);
+
+        console.log('>>> TITLE : ' + title);
+
+    }
+
+    function _desc(elem) {
+
+        var desc = searchElem(elem, ['meta[property="og:description"]', 'meta[property="twitter:description"]', 'p']);
+
+        console.log('>>> DESC : ' + desc);
+
+    }
+
+    function _thumb(elem) {
+
+        var thumb = searchElem(elem, ['meta[property="og:image"]', 'meta[property="twitter:image:src"]', 'meta[property="twitter:image"]', 'image']);
+
+        console.log('>>> DESC : ' + thumb);
+
+    }
+
+
+    function summarize() {
+
+        alert('summarize');
+
+    }
 
     function getAbsoluteBoundingRect(el) {
         var doc = document,
@@ -511,28 +461,26 @@
         };
     }
 
-    //    return;
+//    return;
 
+    function initialize() {
 
-    //////////////////////////
-
+    }
 
     function bootstrap() {
 
-        var resources = [],
+        var scripts = [],
             noConflict = false;
 
         if (window.jQuery === undefined) {
-            resources.push('http://10.64.51.102:2000/components/jquery/dist/jquery.min.js');
+            scripts.push('http://10.64.51.102:2000/components/jquery/dist/jquery.min.js');
         } else if (window.$ && window.$ !== window.jQuery) {
             noConflict = true;
         }
-        resources.push('http://10.64.51.102:2000/components/angular/angular.min.js');
-        resources.push('http://10.64.51.102:2000/components/html2canvas/build/html2canvas.min.js');
-        resources.push('http://10.64.51.102:2000/components/rangy-1.3/rangy-core.js');
-        resources.push('http://10.64.51.102:2000/stylesheets/web-clipper-inject.css');
+        scripts.push('http://10.64.51.102:2000/components/html2canvas/build/html2canvas.min.js');
+        scripts.push('http://10.64.51.102:2000/components/rangy-1.3/rangy-core.js');
 
-        loadResources(resources, function () {
+        loadScripts(scripts, function () {
 
             if (noConflict) {
                 window.$.noConflict();
@@ -541,47 +489,10 @@
 
             initialize();
         });
+
     }
 
-    function loadResources(srcList, callback) {
-
-        var inx, element, type, elements = [];
-
-        if (typeof srcList == 'string') {
-            srcList = [srcList];
-        }
-
-        for (inx = 0; inx < srcList.length; inx++) {
-            type = srcList[inx].match(/\.js$/) ? 'script' : 'css';
-            element = document.createElement(type == 'script' ? 'SCRIPT' : 'LINK');
-            elements.push(element);
-            element.onload = function () {
-                var inx, ready = true;
-                this.__ready = true;
-                for (inx = 0; inx < elements.length; inx++) {
-                    if (!elements[inx].__ready) {
-                        ready = false;
-                        break;
-                    }
-                }
-                if (ready && callback && typeof callback == 'function') {
-                    callback();
-                }
-            };
-            if (type == 'script') {
-                element.type = 'text/javascript';
-                element.src = srcList[inx];
-            } else {
-                element.rel = 'stylesheet';
-                element.type = 'text/css';
-                element.href = srcList[inx];
-            }
-
-            document.body.appendChild(element);
-        }
-    }
-
-    setTimeout(function () {
+    setTimeout(function() {
 
         bootstrap();
 

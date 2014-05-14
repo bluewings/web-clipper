@@ -1,432 +1,496 @@
-.web-clipper-widget .control {
-  position: fixed;
-  top: 10px;
-  right: 10px;
-  z-index: 1000;
-  background-color: yellow;
-  display: none; }
-.web-clipper-widget .pointer {
-  width: 20px;
-  height: 20px;
-  background-color: red;
-  position: absolute;
-  z-index: 1000; }
-.web-clipper-widget.show .control {
-  display: block; }
 @font-face {
-  .web-clipper-widget {
-    font-family: 'Glyphicons Halflings';
-    src: url("/components/bootstrap/dist/fonts/glyphicons-halflings-regular.eot");
-    src: url("/components/bootstrap/dist/fonts/glyphicons-halflings-regular.eot?#iefix") format("embedded-opentype"), url("/components/bootstrap/dist/fonts/glyphicons-halflings-regular.woff") format("woff"), url("/components/bootstrap/dist/fonts/glyphicons-halflings-regular.ttf") format("truetype"), url("/components/bootstrap/dist/fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular") format("svg"); } }
-.web-clipper-widget .glyphicon {
-  position: relative;
-  top: 1px;
-  display: inline-block;
   font-family: 'Glyphicons Halflings';
+  src: url("/components/bootstrap/dist/fonts/glyphicons-halflings-regular.eot");
+  src: url("/components/bootstrap/dist/fonts/glyphicons-halflings-regular.eot?#iefix") format("embedded-opentype"), url("/components/bootstrap/dist/fonts/glyphicons-halflings-regular.woff") format("woff"), url("/components/bootstrap/dist/fonts/glyphicons-halflings-regular.ttf") format("truetype"), url("/components/bootstrap/dist/fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular") format("svg"); }
+@font-face {
+  font-family: 'Play';
   font-style: normal;
-  font-weight: normal;
-  line-height: 1;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale; }
-.web-clipper-widget .glyphicon-asterisk:before {
-  content: "\2a"; }
-.web-clipper-widget .glyphicon-plus:before {
-  content: "\2b"; }
-.web-clipper-widget .glyphicon-euro:before {
-  content: "\20ac"; }
-.web-clipper-widget .glyphicon-minus:before {
-  content: "\2212"; }
-.web-clipper-widget .glyphicon-cloud:before {
-  content: "\2601"; }
-.web-clipper-widget .glyphicon-envelope:before {
-  content: "\2709"; }
-.web-clipper-widget .glyphicon-pencil:before {
-  content: "\270f"; }
-.web-clipper-widget .glyphicon-glass:before {
-  content: "\e001"; }
-.web-clipper-widget .glyphicon-music:before {
-  content: "\e002"; }
-.web-clipper-widget .glyphicon-search:before {
-  content: "\e003"; }
-.web-clipper-widget .glyphicon-heart:before {
-  content: "\e005"; }
-.web-clipper-widget .glyphicon-star:before {
-  content: "\e006"; }
-.web-clipper-widget .glyphicon-star-empty:before {
-  content: "\e007"; }
-.web-clipper-widget .glyphicon-user:before {
-  content: "\e008"; }
-.web-clipper-widget .glyphicon-film:before {
-  content: "\e009"; }
-.web-clipper-widget .glyphicon-th-large:before {
-  content: "\e010"; }
-.web-clipper-widget .glyphicon-th:before {
-  content: "\e011"; }
-.web-clipper-widget .glyphicon-th-list:before {
-  content: "\e012"; }
-.web-clipper-widget .glyphicon-ok:before {
-  content: "\e013"; }
-.web-clipper-widget .glyphicon-remove:before {
-  content: "\e014"; }
-.web-clipper-widget .glyphicon-zoom-in:before {
-  content: "\e015"; }
-.web-clipper-widget .glyphicon-zoom-out:before {
-  content: "\e016"; }
-.web-clipper-widget .glyphicon-off:before {
-  content: "\e017"; }
-.web-clipper-widget .glyphicon-signal:before {
-  content: "\e018"; }
-.web-clipper-widget .glyphicon-cog:before {
-  content: "\e019"; }
-.web-clipper-widget .glyphicon-trash:before {
-  content: "\e020"; }
-.web-clipper-widget .glyphicon-home:before {
-  content: "\e021"; }
-.web-clipper-widget .glyphicon-file:before {
-  content: "\e022"; }
-.web-clipper-widget .glyphicon-time:before {
-  content: "\e023"; }
-.web-clipper-widget .glyphicon-road:before {
-  content: "\e024"; }
-.web-clipper-widget .glyphicon-download-alt:before {
-  content: "\e025"; }
-.web-clipper-widget .glyphicon-download:before {
-  content: "\e026"; }
-.web-clipper-widget .glyphicon-upload:before {
-  content: "\e027"; }
-.web-clipper-widget .glyphicon-inbox:before {
-  content: "\e028"; }
-.web-clipper-widget .glyphicon-play-circle:before {
-  content: "\e029"; }
-.web-clipper-widget .glyphicon-repeat:before {
-  content: "\e030"; }
-.web-clipper-widget .glyphicon-refresh:before {
-  content: "\e031"; }
-.web-clipper-widget .glyphicon-list-alt:before {
-  content: "\e032"; }
-.web-clipper-widget .glyphicon-lock:before {
-  content: "\e033"; }
-.web-clipper-widget .glyphicon-flag:before {
-  content: "\e034"; }
-.web-clipper-widget .glyphicon-headphones:before {
-  content: "\e035"; }
-.web-clipper-widget .glyphicon-volume-off:before {
-  content: "\e036"; }
-.web-clipper-widget .glyphicon-volume-down:before {
-  content: "\e037"; }
-.web-clipper-widget .glyphicon-volume-up:before {
-  content: "\e038"; }
-.web-clipper-widget .glyphicon-qrcode:before {
-  content: "\e039"; }
-.web-clipper-widget .glyphicon-barcode:before {
-  content: "\e040"; }
-.web-clipper-widget .glyphicon-tag:before {
-  content: "\e041"; }
-.web-clipper-widget .glyphicon-tags:before {
-  content: "\e042"; }
-.web-clipper-widget .glyphicon-book:before {
-  content: "\e043"; }
-.web-clipper-widget .glyphicon-bookmark:before {
-  content: "\e044"; }
-.web-clipper-widget .glyphicon-print:before {
-  content: "\e045"; }
-.web-clipper-widget .glyphicon-camera:before {
-  content: "\e046"; }
-.web-clipper-widget .glyphicon-font:before {
-  content: "\e047"; }
-.web-clipper-widget .glyphicon-bold:before {
-  content: "\e048"; }
-.web-clipper-widget .glyphicon-italic:before {
-  content: "\e049"; }
-.web-clipper-widget .glyphicon-text-height:before {
-  content: "\e050"; }
-.web-clipper-widget .glyphicon-text-width:before {
-  content: "\e051"; }
-.web-clipper-widget .glyphicon-align-left:before {
-  content: "\e052"; }
-.web-clipper-widget .glyphicon-align-center:before {
-  content: "\e053"; }
-.web-clipper-widget .glyphicon-align-right:before {
-  content: "\e054"; }
-.web-clipper-widget .glyphicon-align-justify:before {
-  content: "\e055"; }
-.web-clipper-widget .glyphicon-list:before {
-  content: "\e056"; }
-.web-clipper-widget .glyphicon-indent-left:before {
-  content: "\e057"; }
-.web-clipper-widget .glyphicon-indent-right:before {
-  content: "\e058"; }
-.web-clipper-widget .glyphicon-facetime-video:before {
-  content: "\e059"; }
-.web-clipper-widget .glyphicon-picture:before {
-  content: "\e060"; }
-.web-clipper-widget .glyphicon-map-marker:before {
-  content: "\e062"; }
-.web-clipper-widget .glyphicon-adjust:before {
-  content: "\e063"; }
-.web-clipper-widget .glyphicon-tint:before {
-  content: "\e064"; }
-.web-clipper-widget .glyphicon-edit:before {
-  content: "\e065"; }
-.web-clipper-widget .glyphicon-share:before {
-  content: "\e066"; }
-.web-clipper-widget .glyphicon-check:before {
-  content: "\e067"; }
-.web-clipper-widget .glyphicon-move:before {
-  content: "\e068"; }
-.web-clipper-widget .glyphicon-step-backward:before {
-  content: "\e069"; }
-.web-clipper-widget .glyphicon-fast-backward:before {
-  content: "\e070"; }
-.web-clipper-widget .glyphicon-backward:before {
-  content: "\e071"; }
-.web-clipper-widget .glyphicon-play:before {
-  content: "\e072"; }
-.web-clipper-widget .glyphicon-pause:before {
-  content: "\e073"; }
-.web-clipper-widget .glyphicon-stop:before {
-  content: "\e074"; }
-.web-clipper-widget .glyphicon-forward:before {
-  content: "\e075"; }
-.web-clipper-widget .glyphicon-fast-forward:before {
-  content: "\e076"; }
-.web-clipper-widget .glyphicon-step-forward:before {
-  content: "\e077"; }
-.web-clipper-widget .glyphicon-eject:before {
-  content: "\e078"; }
-.web-clipper-widget .glyphicon-chevron-left:before {
-  content: "\e079"; }
-.web-clipper-widget .glyphicon-chevron-right:before {
-  content: "\e080"; }
-.web-clipper-widget .glyphicon-plus-sign:before {
-  content: "\e081"; }
-.web-clipper-widget .glyphicon-minus-sign:before {
-  content: "\e082"; }
-.web-clipper-widget .glyphicon-remove-sign:before {
-  content: "\e083"; }
-.web-clipper-widget .glyphicon-ok-sign:before {
-  content: "\e084"; }
-.web-clipper-widget .glyphicon-question-sign:before {
-  content: "\e085"; }
-.web-clipper-widget .glyphicon-info-sign:before {
-  content: "\e086"; }
-.web-clipper-widget .glyphicon-screenshot:before {
-  content: "\e087"; }
-.web-clipper-widget .glyphicon-remove-circle:before {
-  content: "\e088"; }
-.web-clipper-widget .glyphicon-ok-circle:before {
-  content: "\e089"; }
-.web-clipper-widget .glyphicon-ban-circle:before {
-  content: "\e090"; }
-.web-clipper-widget .glyphicon-arrow-left:before {
-  content: "\e091"; }
-.web-clipper-widget .glyphicon-arrow-right:before {
-  content: "\e092"; }
-.web-clipper-widget .glyphicon-arrow-up:before {
-  content: "\e093"; }
-.web-clipper-widget .glyphicon-arrow-down:before {
-  content: "\e094"; }
-.web-clipper-widget .glyphicon-share-alt:before {
-  content: "\e095"; }
-.web-clipper-widget .glyphicon-resize-full:before {
-  content: "\e096"; }
-.web-clipper-widget .glyphicon-resize-small:before {
-  content: "\e097"; }
-.web-clipper-widget .glyphicon-exclamation-sign:before {
-  content: "\e101"; }
-.web-clipper-widget .glyphicon-gift:before {
-  content: "\e102"; }
-.web-clipper-widget .glyphicon-leaf:before {
-  content: "\e103"; }
-.web-clipper-widget .glyphicon-fire:before {
-  content: "\e104"; }
-.web-clipper-widget .glyphicon-eye-open:before {
-  content: "\e105"; }
-.web-clipper-widget .glyphicon-eye-close:before {
-  content: "\e106"; }
-.web-clipper-widget .glyphicon-warning-sign:before {
-  content: "\e107"; }
-.web-clipper-widget .glyphicon-plane:before {
-  content: "\e108"; }
-.web-clipper-widget .glyphicon-calendar:before {
-  content: "\e109"; }
-.web-clipper-widget .glyphicon-random:before {
-  content: "\e110"; }
-.web-clipper-widget .glyphicon-comment:before {
-  content: "\e111"; }
-.web-clipper-widget .glyphicon-magnet:before {
-  content: "\e112"; }
-.web-clipper-widget .glyphicon-chevron-up:before {
-  content: "\e113"; }
-.web-clipper-widget .glyphicon-chevron-down:before {
-  content: "\e114"; }
-.web-clipper-widget .glyphicon-retweet:before {
-  content: "\e115"; }
-.web-clipper-widget .glyphicon-shopping-cart:before {
-  content: "\e116"; }
-.web-clipper-widget .glyphicon-folder-close:before {
-  content: "\e117"; }
-.web-clipper-widget .glyphicon-folder-open:before {
-  content: "\e118"; }
-.web-clipper-widget .glyphicon-resize-vertical:before {
-  content: "\e119"; }
-.web-clipper-widget .glyphicon-resize-horizontal:before {
-  content: "\e120"; }
-.web-clipper-widget .glyphicon-hdd:before {
-  content: "\e121"; }
-.web-clipper-widget .glyphicon-bullhorn:before {
-  content: "\e122"; }
-.web-clipper-widget .glyphicon-bell:before {
-  content: "\e123"; }
-.web-clipper-widget .glyphicon-certificate:before {
-  content: "\e124"; }
-.web-clipper-widget .glyphicon-thumbs-up:before {
-  content: "\e125"; }
-.web-clipper-widget .glyphicon-thumbs-down:before {
-  content: "\e126"; }
-.web-clipper-widget .glyphicon-hand-right:before {
-  content: "\e127"; }
-.web-clipper-widget .glyphicon-hand-left:before {
-  content: "\e128"; }
-.web-clipper-widget .glyphicon-hand-up:before {
-  content: "\e129"; }
-.web-clipper-widget .glyphicon-hand-down:before {
-  content: "\e130"; }
-.web-clipper-widget .glyphicon-circle-arrow-right:before {
-  content: "\e131"; }
-.web-clipper-widget .glyphicon-circle-arrow-left:before {
-  content: "\e132"; }
-.web-clipper-widget .glyphicon-circle-arrow-up:before {
-  content: "\e133"; }
-.web-clipper-widget .glyphicon-circle-arrow-down:before {
-  content: "\e134"; }
-.web-clipper-widget .glyphicon-globe:before {
-  content: "\e135"; }
-.web-clipper-widget .glyphicon-wrench:before {
-  content: "\e136"; }
-.web-clipper-widget .glyphicon-tasks:before {
-  content: "\e137"; }
-.web-clipper-widget .glyphicon-filter:before {
-  content: "\e138"; }
-.web-clipper-widget .glyphicon-briefcase:before {
-  content: "\e139"; }
-.web-clipper-widget .glyphicon-fullscreen:before {
-  content: "\e140"; }
-.web-clipper-widget .glyphicon-dashboard:before {
-  content: "\e141"; }
-.web-clipper-widget .glyphicon-paperclip:before {
-  content: "\e142"; }
-.web-clipper-widget .glyphicon-heart-empty:before {
-  content: "\e143"; }
-.web-clipper-widget .glyphicon-link:before {
-  content: "\e144"; }
-.web-clipper-widget .glyphicon-phone:before {
-  content: "\e145"; }
-.web-clipper-widget .glyphicon-pushpin:before {
-  content: "\e146"; }
-.web-clipper-widget .glyphicon-usd:before {
-  content: "\e148"; }
-.web-clipper-widget .glyphicon-gbp:before {
-  content: "\e149"; }
-.web-clipper-widget .glyphicon-sort:before {
-  content: "\e150"; }
-.web-clipper-widget .glyphicon-sort-by-alphabet:before {
-  content: "\e151"; }
-.web-clipper-widget .glyphicon-sort-by-alphabet-alt:before {
-  content: "\e152"; }
-.web-clipper-widget .glyphicon-sort-by-order:before {
-  content: "\e153"; }
-.web-clipper-widget .glyphicon-sort-by-order-alt:before {
-  content: "\e154"; }
-.web-clipper-widget .glyphicon-sort-by-attributes:before {
-  content: "\e155"; }
-.web-clipper-widget .glyphicon-sort-by-attributes-alt:before {
-  content: "\e156"; }
-.web-clipper-widget .glyphicon-unchecked:before {
-  content: "\e157"; }
-.web-clipper-widget .glyphicon-expand:before {
-  content: "\e158"; }
-.web-clipper-widget .glyphicon-collapse-down:before {
-  content: "\e159"; }
-.web-clipper-widget .glyphicon-collapse-up:before {
-  content: "\e160"; }
-.web-clipper-widget .glyphicon-log-in:before {
-  content: "\e161"; }
-.web-clipper-widget .glyphicon-flash:before {
-  content: "\e162"; }
-.web-clipper-widget .glyphicon-log-out:before {
-  content: "\e163"; }
-.web-clipper-widget .glyphicon-new-window:before {
-  content: "\e164"; }
-.web-clipper-widget .glyphicon-record:before {
-  content: "\e165"; }
-.web-clipper-widget .glyphicon-save:before {
-  content: "\e166"; }
-.web-clipper-widget .glyphicon-open:before {
-  content: "\e167"; }
-.web-clipper-widget .glyphicon-saved:before {
-  content: "\e168"; }
-.web-clipper-widget .glyphicon-import:before {
-  content: "\e169"; }
-.web-clipper-widget .glyphicon-export:before {
-  content: "\e170"; }
-.web-clipper-widget .glyphicon-send:before {
-  content: "\e171"; }
-.web-clipper-widget .glyphicon-floppy-disk:before {
-  content: "\e172"; }
-.web-clipper-widget .glyphicon-floppy-saved:before {
-  content: "\e173"; }
-.web-clipper-widget .glyphicon-floppy-remove:before {
-  content: "\e174"; }
-.web-clipper-widget .glyphicon-floppy-save:before {
-  content: "\e175"; }
-.web-clipper-widget .glyphicon-floppy-open:before {
-  content: "\e176"; }
-.web-clipper-widget .glyphicon-credit-card:before {
-  content: "\e177"; }
-.web-clipper-widget .glyphicon-transfer:before {
-  content: "\e178"; }
-.web-clipper-widget .glyphicon-cutlery:before {
-  content: "\e179"; }
-.web-clipper-widget .glyphicon-header:before {
-  content: "\e180"; }
-.web-clipper-widget .glyphicon-compressed:before {
-  content: "\e181"; }
-.web-clipper-widget .glyphicon-earphone:before {
-  content: "\e182"; }
-.web-clipper-widget .glyphicon-phone-alt:before {
-  content: "\e183"; }
-.web-clipper-widget .glyphicon-tower:before {
-  content: "\e184"; }
-.web-clipper-widget .glyphicon-stats:before {
-  content: "\e185"; }
-.web-clipper-widget .glyphicon-sd-video:before {
-  content: "\e186"; }
-.web-clipper-widget .glyphicon-hd-video:before {
-  content: "\e187"; }
-.web-clipper-widget .glyphicon-subtitles:before {
-  content: "\e188"; }
-.web-clipper-widget .glyphicon-sound-stereo:before {
-  content: "\e189"; }
-.web-clipper-widget .glyphicon-sound-dolby:before {
-  content: "\e190"; }
-.web-clipper-widget .glyphicon-sound-5-1:before {
-  content: "\e191"; }
-.web-clipper-widget .glyphicon-sound-6-1:before {
-  content: "\e192"; }
-.web-clipper-widget .glyphicon-sound-7-1:before {
-  content: "\e193"; }
-.web-clipper-widget .glyphicon-copyright-mark:before {
-  content: "\e194"; }
-.web-clipper-widget .glyphicon-registration-mark:before {
-  content: "\e195"; }
-.web-clipper-widget .glyphicon-cloud-download:before {
-  content: "\e197"; }
-.web-clipper-widget .glyphicon-cloud-upload:before {
-  content: "\e198"; }
-.web-clipper-widget .glyphicon-tree-conifer:before {
-  content: "\e199"; }
-.web-clipper-widget .glyphicon-tree-deciduous:before {
-  content: "\e200"; }
+  font-weight: 400;
+  src: local("Play"), url(http://themes.googleusercontent.com/static/fonts/play/v4/-SXnV4mZjf4oh1IBw13WZw.woff) format("woff"); }
+@font-face {
+  font-family: 'Play';
+  font-style: normal;
+  font-weight: 700;
+  src: local("Play-Bold"), url(http://themes.googleusercontent.com/static/fonts/play/v4/ZzUearZLklGfoL18Ti0GaQ.woff) format("woff"); }
+* {
+  cursor: url(/images/marker-pen.png) !important; }
+
+.use-marker ::selection {
+  background: #fff2a8; }
+.use-marker * {
+  /*cursor:pointer !important;*/
+  cursor: url(/images/marker-pen.png), auto;
+  /*
+  url(smiley.gif),url(myBall.cur),auto
+  */ }
+
+.web-clipper-widget {
+  font-family: Play;
+  font-size: 16px;
+  color: #ccc;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.3); }
+  .web-clipper-widget .control {
+    position: fixed;
+    padding: 20px;
+    box-sizing: border-box;
+    text-align: left;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: none;
+    width: 150px;
+    /*.btn-xs {
+    
+    /*font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px;
+}*/ }
+    .web-clipper-widget .control .btn {
+      outline: none;
+      display: inline-block;
+      margin-bottom: 0;
+      font-weight: 400;
+      text-align: center;
+      vertical-align: middle;
+      cursor: pointer;
+      background-image: none;
+      border: 1px solid transparent;
+      white-space: nowrap;
+      /*padding: 6px 12px;*/
+      padding: 4px 5px 2px;
+      line-height: 1.42857143;
+      /*border-radius: 4px;*/
+      border-radius: 4px;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      color: #ccc;
+      background-color: rgba(255, 255, 255, 0);
+      -webkit-transition: all 0.5s; }
+      .web-clipper-widget .control .btn.active {
+        color: #333;
+        background-color: #fff;
+        border-color: #ccc; }
+  .web-clipper-widget .pointer {
+    width: 20px;
+    height: 20px;
+    background-color: red;
+    position: absolute;
+    z-index: 1000; }
+  .web-clipper-widget.show .control {
+    display: block; }
+  .web-clipper-widget .glyphicon {
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-family: 'Glyphicons Halflings';
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale; }
+  .web-clipper-widget .glyphicon-asterisk:before {
+    content: "\2a"; }
+  .web-clipper-widget .glyphicon-plus:before {
+    content: "\2b"; }
+  .web-clipper-widget .glyphicon-euro:before {
+    content: "\20ac"; }
+  .web-clipper-widget .glyphicon-minus:before {
+    content: "\2212"; }
+  .web-clipper-widget .glyphicon-cloud:before {
+    content: "\2601"; }
+  .web-clipper-widget .glyphicon-envelope:before {
+    content: "\2709"; }
+  .web-clipper-widget .glyphicon-pencil:before {
+    content: "\270f"; }
+  .web-clipper-widget .glyphicon-glass:before {
+    content: "\e001"; }
+  .web-clipper-widget .glyphicon-music:before {
+    content: "\e002"; }
+  .web-clipper-widget .glyphicon-search:before {
+    content: "\e003"; }
+  .web-clipper-widget .glyphicon-heart:before {
+    content: "\e005"; }
+  .web-clipper-widget .glyphicon-star:before {
+    content: "\e006"; }
+  .web-clipper-widget .glyphicon-star-empty:before {
+    content: "\e007"; }
+  .web-clipper-widget .glyphicon-user:before {
+    content: "\e008"; }
+  .web-clipper-widget .glyphicon-film:before {
+    content: "\e009"; }
+  .web-clipper-widget .glyphicon-th-large:before {
+    content: "\e010"; }
+  .web-clipper-widget .glyphicon-th:before {
+    content: "\e011"; }
+  .web-clipper-widget .glyphicon-th-list:before {
+    content: "\e012"; }
+  .web-clipper-widget .glyphicon-ok:before {
+    content: "\e013"; }
+  .web-clipper-widget .glyphicon-remove:before {
+    content: "\e014"; }
+  .web-clipper-widget .glyphicon-zoom-in:before {
+    content: "\e015"; }
+  .web-clipper-widget .glyphicon-zoom-out:before {
+    content: "\e016"; }
+  .web-clipper-widget .glyphicon-off:before {
+    content: "\e017"; }
+  .web-clipper-widget .glyphicon-signal:before {
+    content: "\e018"; }
+  .web-clipper-widget .glyphicon-cog:before {
+    content: "\e019"; }
+  .web-clipper-widget .glyphicon-trash:before {
+    content: "\e020"; }
+  .web-clipper-widget .glyphicon-home:before {
+    content: "\e021"; }
+  .web-clipper-widget .glyphicon-file:before {
+    content: "\e022"; }
+  .web-clipper-widget .glyphicon-time:before {
+    content: "\e023"; }
+  .web-clipper-widget .glyphicon-road:before {
+    content: "\e024"; }
+  .web-clipper-widget .glyphicon-download-alt:before {
+    content: "\e025"; }
+  .web-clipper-widget .glyphicon-download:before {
+    content: "\e026"; }
+  .web-clipper-widget .glyphicon-upload:before {
+    content: "\e027"; }
+  .web-clipper-widget .glyphicon-inbox:before {
+    content: "\e028"; }
+  .web-clipper-widget .glyphicon-play-circle:before {
+    content: "\e029"; }
+  .web-clipper-widget .glyphicon-repeat:before {
+    content: "\e030"; }
+  .web-clipper-widget .glyphicon-refresh:before {
+    content: "\e031"; }
+  .web-clipper-widget .glyphicon-list-alt:before {
+    content: "\e032"; }
+  .web-clipper-widget .glyphicon-lock:before {
+    content: "\e033"; }
+  .web-clipper-widget .glyphicon-flag:before {
+    content: "\e034"; }
+  .web-clipper-widget .glyphicon-headphones:before {
+    content: "\e035"; }
+  .web-clipper-widget .glyphicon-volume-off:before {
+    content: "\e036"; }
+  .web-clipper-widget .glyphicon-volume-down:before {
+    content: "\e037"; }
+  .web-clipper-widget .glyphicon-volume-up:before {
+    content: "\e038"; }
+  .web-clipper-widget .glyphicon-qrcode:before {
+    content: "\e039"; }
+  .web-clipper-widget .glyphicon-barcode:before {
+    content: "\e040"; }
+  .web-clipper-widget .glyphicon-tag:before {
+    content: "\e041"; }
+  .web-clipper-widget .glyphicon-tags:before {
+    content: "\e042"; }
+  .web-clipper-widget .glyphicon-book:before {
+    content: "\e043"; }
+  .web-clipper-widget .glyphicon-bookmark:before {
+    content: "\e044"; }
+  .web-clipper-widget .glyphicon-print:before {
+    content: "\e045"; }
+  .web-clipper-widget .glyphicon-camera:before {
+    content: "\e046"; }
+  .web-clipper-widget .glyphicon-font:before {
+    content: "\e047"; }
+  .web-clipper-widget .glyphicon-bold:before {
+    content: "\e048"; }
+  .web-clipper-widget .glyphicon-italic:before {
+    content: "\e049"; }
+  .web-clipper-widget .glyphicon-text-height:before {
+    content: "\e050"; }
+  .web-clipper-widget .glyphicon-text-width:before {
+    content: "\e051"; }
+  .web-clipper-widget .glyphicon-align-left:before {
+    content: "\e052"; }
+  .web-clipper-widget .glyphicon-align-center:before {
+    content: "\e053"; }
+  .web-clipper-widget .glyphicon-align-right:before {
+    content: "\e054"; }
+  .web-clipper-widget .glyphicon-align-justify:before {
+    content: "\e055"; }
+  .web-clipper-widget .glyphicon-list:before {
+    content: "\e056"; }
+  .web-clipper-widget .glyphicon-indent-left:before {
+    content: "\e057"; }
+  .web-clipper-widget .glyphicon-indent-right:before {
+    content: "\e058"; }
+  .web-clipper-widget .glyphicon-facetime-video:before {
+    content: "\e059"; }
+  .web-clipper-widget .glyphicon-picture:before {
+    content: "\e060"; }
+  .web-clipper-widget .glyphicon-map-marker:before {
+    content: "\e062"; }
+  .web-clipper-widget .glyphicon-adjust:before {
+    content: "\e063"; }
+  .web-clipper-widget .glyphicon-tint:before {
+    content: "\e064"; }
+  .web-clipper-widget .glyphicon-edit:before {
+    content: "\e065"; }
+  .web-clipper-widget .glyphicon-share:before {
+    content: "\e066"; }
+  .web-clipper-widget .glyphicon-check:before {
+    content: "\e067"; }
+  .web-clipper-widget .glyphicon-move:before {
+    content: "\e068"; }
+  .web-clipper-widget .glyphicon-step-backward:before {
+    content: "\e069"; }
+  .web-clipper-widget .glyphicon-fast-backward:before {
+    content: "\e070"; }
+  .web-clipper-widget .glyphicon-backward:before {
+    content: "\e071"; }
+  .web-clipper-widget .glyphicon-play:before {
+    content: "\e072"; }
+  .web-clipper-widget .glyphicon-pause:before {
+    content: "\e073"; }
+  .web-clipper-widget .glyphicon-stop:before {
+    content: "\e074"; }
+  .web-clipper-widget .glyphicon-forward:before {
+    content: "\e075"; }
+  .web-clipper-widget .glyphicon-fast-forward:before {
+    content: "\e076"; }
+  .web-clipper-widget .glyphicon-step-forward:before {
+    content: "\e077"; }
+  .web-clipper-widget .glyphicon-eject:before {
+    content: "\e078"; }
+  .web-clipper-widget .glyphicon-chevron-left:before {
+    content: "\e079"; }
+  .web-clipper-widget .glyphicon-chevron-right:before {
+    content: "\e080"; }
+  .web-clipper-widget .glyphicon-plus-sign:before {
+    content: "\e081"; }
+  .web-clipper-widget .glyphicon-minus-sign:before {
+    content: "\e082"; }
+  .web-clipper-widget .glyphicon-remove-sign:before {
+    content: "\e083"; }
+  .web-clipper-widget .glyphicon-ok-sign:before {
+    content: "\e084"; }
+  .web-clipper-widget .glyphicon-question-sign:before {
+    content: "\e085"; }
+  .web-clipper-widget .glyphicon-info-sign:before {
+    content: "\e086"; }
+  .web-clipper-widget .glyphicon-screenshot:before {
+    content: "\e087"; }
+  .web-clipper-widget .glyphicon-remove-circle:before {
+    content: "\e088"; }
+  .web-clipper-widget .glyphicon-ok-circle:before {
+    content: "\e089"; }
+  .web-clipper-widget .glyphicon-ban-circle:before {
+    content: "\e090"; }
+  .web-clipper-widget .glyphicon-arrow-left:before {
+    content: "\e091"; }
+  .web-clipper-widget .glyphicon-arrow-right:before {
+    content: "\e092"; }
+  .web-clipper-widget .glyphicon-arrow-up:before {
+    content: "\e093"; }
+  .web-clipper-widget .glyphicon-arrow-down:before {
+    content: "\e094"; }
+  .web-clipper-widget .glyphicon-share-alt:before {
+    content: "\e095"; }
+  .web-clipper-widget .glyphicon-resize-full:before {
+    content: "\e096"; }
+  .web-clipper-widget .glyphicon-resize-small:before {
+    content: "\e097"; }
+  .web-clipper-widget .glyphicon-exclamation-sign:before {
+    content: "\e101"; }
+  .web-clipper-widget .glyphicon-gift:before {
+    content: "\e102"; }
+  .web-clipper-widget .glyphicon-leaf:before {
+    content: "\e103"; }
+  .web-clipper-widget .glyphicon-fire:before {
+    content: "\e104"; }
+  .web-clipper-widget .glyphicon-eye-open:before {
+    content: "\e105"; }
+  .web-clipper-widget .glyphicon-eye-close:before {
+    content: "\e106"; }
+  .web-clipper-widget .glyphicon-warning-sign:before {
+    content: "\e107"; }
+  .web-clipper-widget .glyphicon-plane:before {
+    content: "\e108"; }
+  .web-clipper-widget .glyphicon-calendar:before {
+    content: "\e109"; }
+  .web-clipper-widget .glyphicon-random:before {
+    content: "\e110"; }
+  .web-clipper-widget .glyphicon-comment:before {
+    content: "\e111"; }
+  .web-clipper-widget .glyphicon-magnet:before {
+    content: "\e112"; }
+  .web-clipper-widget .glyphicon-chevron-up:before {
+    content: "\e113"; }
+  .web-clipper-widget .glyphicon-chevron-down:before {
+    content: "\e114"; }
+  .web-clipper-widget .glyphicon-retweet:before {
+    content: "\e115"; }
+  .web-clipper-widget .glyphicon-shopping-cart:before {
+    content: "\e116"; }
+  .web-clipper-widget .glyphicon-folder-close:before {
+    content: "\e117"; }
+  .web-clipper-widget .glyphicon-folder-open:before {
+    content: "\e118"; }
+  .web-clipper-widget .glyphicon-resize-vertical:before {
+    content: "\e119"; }
+  .web-clipper-widget .glyphicon-resize-horizontal:before {
+    content: "\e120"; }
+  .web-clipper-widget .glyphicon-hdd:before {
+    content: "\e121"; }
+  .web-clipper-widget .glyphicon-bullhorn:before {
+    content: "\e122"; }
+  .web-clipper-widget .glyphicon-bell:before {
+    content: "\e123"; }
+  .web-clipper-widget .glyphicon-certificate:before {
+    content: "\e124"; }
+  .web-clipper-widget .glyphicon-thumbs-up:before {
+    content: "\e125"; }
+  .web-clipper-widget .glyphicon-thumbs-down:before {
+    content: "\e126"; }
+  .web-clipper-widget .glyphicon-hand-right:before {
+    content: "\e127"; }
+  .web-clipper-widget .glyphicon-hand-left:before {
+    content: "\e128"; }
+  .web-clipper-widget .glyphicon-hand-up:before {
+    content: "\e129"; }
+  .web-clipper-widget .glyphicon-hand-down:before {
+    content: "\e130"; }
+  .web-clipper-widget .glyphicon-circle-arrow-right:before {
+    content: "\e131"; }
+  .web-clipper-widget .glyphicon-circle-arrow-left:before {
+    content: "\e132"; }
+  .web-clipper-widget .glyphicon-circle-arrow-up:before {
+    content: "\e133"; }
+  .web-clipper-widget .glyphicon-circle-arrow-down:before {
+    content: "\e134"; }
+  .web-clipper-widget .glyphicon-globe:before {
+    content: "\e135"; }
+  .web-clipper-widget .glyphicon-wrench:before {
+    content: "\e136"; }
+  .web-clipper-widget .glyphicon-tasks:before {
+    content: "\e137"; }
+  .web-clipper-widget .glyphicon-filter:before {
+    content: "\e138"; }
+  .web-clipper-widget .glyphicon-briefcase:before {
+    content: "\e139"; }
+  .web-clipper-widget .glyphicon-fullscreen:before {
+    content: "\e140"; }
+  .web-clipper-widget .glyphicon-dashboard:before {
+    content: "\e141"; }
+  .web-clipper-widget .glyphicon-paperclip:before {
+    content: "\e142"; }
+  .web-clipper-widget .glyphicon-heart-empty:before {
+    content: "\e143"; }
+  .web-clipper-widget .glyphicon-link:before {
+    content: "\e144"; }
+  .web-clipper-widget .glyphicon-phone:before {
+    content: "\e145"; }
+  .web-clipper-widget .glyphicon-pushpin:before {
+    content: "\e146"; }
+  .web-clipper-widget .glyphicon-usd:before {
+    content: "\e148"; }
+  .web-clipper-widget .glyphicon-gbp:before {
+    content: "\e149"; }
+  .web-clipper-widget .glyphicon-sort:before {
+    content: "\e150"; }
+  .web-clipper-widget .glyphicon-sort-by-alphabet:before {
+    content: "\e151"; }
+  .web-clipper-widget .glyphicon-sort-by-alphabet-alt:before {
+    content: "\e152"; }
+  .web-clipper-widget .glyphicon-sort-by-order:before {
+    content: "\e153"; }
+  .web-clipper-widget .glyphicon-sort-by-order-alt:before {
+    content: "\e154"; }
+  .web-clipper-widget .glyphicon-sort-by-attributes:before {
+    content: "\e155"; }
+  .web-clipper-widget .glyphicon-sort-by-attributes-alt:before {
+    content: "\e156"; }
+  .web-clipper-widget .glyphicon-unchecked:before {
+    content: "\e157"; }
+  .web-clipper-widget .glyphicon-expand:before {
+    content: "\e158"; }
+  .web-clipper-widget .glyphicon-collapse-down:before {
+    content: "\e159"; }
+  .web-clipper-widget .glyphicon-collapse-up:before {
+    content: "\e160"; }
+  .web-clipper-widget .glyphicon-log-in:before {
+    content: "\e161"; }
+  .web-clipper-widget .glyphicon-flash:before {
+    content: "\e162"; }
+  .web-clipper-widget .glyphicon-log-out:before {
+    content: "\e163"; }
+  .web-clipper-widget .glyphicon-new-window:before {
+    content: "\e164"; }
+  .web-clipper-widget .glyphicon-record:before {
+    content: "\e165"; }
+  .web-clipper-widget .glyphicon-save:before {
+    content: "\e166"; }
+  .web-clipper-widget .glyphicon-open:before {
+    content: "\e167"; }
+  .web-clipper-widget .glyphicon-saved:before {
+    content: "\e168"; }
+  .web-clipper-widget .glyphicon-import:before {
+    content: "\e169"; }
+  .web-clipper-widget .glyphicon-export:before {
+    content: "\e170"; }
+  .web-clipper-widget .glyphicon-send:before {
+    content: "\e171"; }
+  .web-clipper-widget .glyphicon-floppy-disk:before {
+    content: "\e172"; }
+  .web-clipper-widget .glyphicon-floppy-saved:before {
+    content: "\e173"; }
+  .web-clipper-widget .glyphicon-floppy-remove:before {
+    content: "\e174"; }
+  .web-clipper-widget .glyphicon-floppy-save:before {
+    content: "\e175"; }
+  .web-clipper-widget .glyphicon-floppy-open:before {
+    content: "\e176"; }
+  .web-clipper-widget .glyphicon-credit-card:before {
+    content: "\e177"; }
+  .web-clipper-widget .glyphicon-transfer:before {
+    content: "\e178"; }
+  .web-clipper-widget .glyphicon-cutlery:before {
+    content: "\e179"; }
+  .web-clipper-widget .glyphicon-header:before {
+    content: "\e180"; }
+  .web-clipper-widget .glyphicon-compressed:before {
+    content: "\e181"; }
+  .web-clipper-widget .glyphicon-earphone:before {
+    content: "\e182"; }
+  .web-clipper-widget .glyphicon-phone-alt:before {
+    content: "\e183"; }
+  .web-clipper-widget .glyphicon-tower:before {
+    content: "\e184"; }
+  .web-clipper-widget .glyphicon-stats:before {
+    content: "\e185"; }
+  .web-clipper-widget .glyphicon-sd-video:before {
+    content: "\e186"; }
+  .web-clipper-widget .glyphicon-hd-video:before {
+    content: "\e187"; }
+  .web-clipper-widget .glyphicon-subtitles:before {
+    content: "\e188"; }
+  .web-clipper-widget .glyphicon-sound-stereo:before {
+    content: "\e189"; }
+  .web-clipper-widget .glyphicon-sound-dolby:before {
+    content: "\e190"; }
+  .web-clipper-widget .glyphicon-sound-5-1:before {
+    content: "\e191"; }
+  .web-clipper-widget .glyphicon-sound-6-1:before {
+    content: "\e192"; }
+  .web-clipper-widget .glyphicon-sound-7-1:before {
+    content: "\e193"; }
+  .web-clipper-widget .glyphicon-copyright-mark:before {
+    content: "\e194"; }
+  .web-clipper-widget .glyphicon-registration-mark:before {
+    content: "\e195"; }
+  .web-clipper-widget .glyphicon-cloud-download:before {
+    content: "\e197"; }
+  .web-clipper-widget .glyphicon-cloud-upload:before {
+    content: "\e198"; }
+  .web-clipper-widget .glyphicon-tree-conifer:before {
+    content: "\e199"; }
+  .web-clipper-widget .glyphicon-tree-deciduous:before {
+    content: "\e200"; }
 
 /*# sourceMappingURL=web-clipper-inject.css.map */
