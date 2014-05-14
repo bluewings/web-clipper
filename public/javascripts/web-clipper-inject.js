@@ -13,9 +13,12 @@
         useMarker: false
     };
 
+
+    var SVR_ADDR = "http://127.0.0.1:2000";
+
     URL = {
 
-        TEMPLATE: 'http://10.64.51.102:2000/template/widget'
+        TEMPLATE: SVR_ADDR + '/template/widget'
 
     };
 
@@ -523,14 +526,14 @@
             noConflict = false;
 
         if (window.jQuery === undefined) {
-            resources.push('http://10.64.51.102:2000/components/jquery/dist/jquery.min.js');
+            resources.push(SVR_ADDR + '/components/jquery/dist/jquery.min.js');
         } else if (window.$ && window.$ !== window.jQuery) {
             noConflict = true;
         }
-        resources.push('http://10.64.51.102:2000/components/angular/angular.min.js');
-        resources.push('http://10.64.51.102:2000/components/html2canvas/build/html2canvas.min.js');
-        resources.push('http://10.64.51.102:2000/components/rangy-1.3/rangy-core.js');
-        resources.push('http://10.64.51.102:2000/stylesheets/web-clipper-inject.css');
+        resources.push(SVR_ADDR + '/components/angular/angular.min.js');
+        resources.push(SVR_ADDR + '/components/html2canvas/build/html2canvas.min.js');
+        resources.push(SVR_ADDR + '/components/rangy-1.3/rangy-core.js');
+        resources.push(SVR_ADDR + '/stylesheets/web-clipper-inject.css');
 
         loadResources(resources, function () {
 

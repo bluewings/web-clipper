@@ -1,13 +1,18 @@
 div(ng-controller='clipper-main', ng-class='"web-clipper-widget" + (data.showWidget ? " show" : "")')
-  .control
+	.control
 
-    button.btn(ng-click='data.useMarker = data.useMarker ? false : true;' ng-class='data.useMarker ? "" : "active"')
-      span.glyphicon.glyphicon-camera(style='font-size:18px')
-    button.btn(ng-click='data.useMarker = data.useMarker ? false : true;' ng-class='data.useMarker ? "active" : ""')
-      span.glyphicon.glyphicon-pencil(style='font-size:18px')
+		button.btn(ng-click='data.useMarker = data.useMarker ? false : true;' ng-class='data.useMarker ? "" : "active"')
+			span.glyphicon.glyphicon-camera(style='font-size:18px')
+		button.btn(ng-click='data.useMarker = data.useMarker ? false : true;' ng-class='data.useMarker ? "active" : ""')
+			span.glyphicon.glyphicon-pencil(style='font-size:18px')
 
-    textarea
-      {{data | json}}  
+		ul
+			li
+				| Test
+			li
+				| Test 123
+
+
 
 
 
