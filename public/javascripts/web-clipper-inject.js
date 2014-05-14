@@ -31,8 +31,10 @@
 
         initView(function () {
 
-            initNgModule(view.container);
-            attachEvtHandler();
+            var refer;
+
+            refer = initNgModule(view.container);
+            attachEvtHandler(refer);
         });
     }
 
@@ -61,6 +63,8 @@
     }
 
     function initNgModule(elen) {
+
+        var ngApp = {};
 
         app = angular.module('web-clipper-widget', []);
 
@@ -100,6 +104,9 @@
         });
 
         app.controller('clipper-main', function ($scope, $element, $http, clipper) {
+
+            ngApp.scope = $scope;
+            ngApp.element = $element;
 
             $scope.data = {
 
@@ -149,33 +156,25 @@
         });
 
         angular.bootstrap(elen, ['web-clipper-widget']);
+
+        return ngApp;
     }
 
-    function attachEvtHandler() {
-
-    }
-
-    function __trash() {
-
-
-
-        //initNgModule();
-
-        return;
-
-        initView();
-
-        console.log('initialize');
+    function attachEvtHandler(refer) {
 
 
 
         $(document.body).on('mouseup', function () {
 
 
+            var scrollTop = $(window).scrollTop(),
+                scrollLeft = $(window).scrollLeft();
 
             //console.log('mouseup');
             //console.log(rangy);
-            if (!status.useMarker) {
+
+            //console.log(refer.scope);
+            if (!refer.scope.data.useMarker) {
                 return;
 
             }
@@ -185,6 +184,44 @@
             //console.log(rangy.getSelection().getRangeAt(0).toString());
             console.log('>>> range at 0');
             console.log(rangy.getSelection().getRangeAt(0));
+
+function getGGG(textNode) {
+var range = document.createRange();
+range.selectNodeContents(textNode);
+var rects = range.getClientRects();
+
+//var textNodeLeft = rects[0].left; 
+console.log(rects);
+var div = $('<div></div>');
+var rect = rects[0];
+var rectE= rects[rects.length - 1];
+
+
+
+                    $(document.body).append(div);
+                    div.css({
+                        position: 'absolute',
+                        zIndex: 20000,
+                        top: rect.top + scrollTop,
+                        left: rect.left + scrollLeft,
+                        height: rectE.top + rectE.height -rect.top,
+                        width: rectE.left + rectE.width - rect.left,
+                        //width: rect.width,
+                        //height: rect.height,
+                        backgroundColor: 'rgba(0,255,0,0.1)'
+
+                    });
+}
+
+            getGGG(range.startContainer);
+
+/*
+var range = document.createRange();
+range.selectNodeContents(someTextNode);
+var rects = range.getClientRects();
+
+var textNodeLeft = rects[0].left;            
+*/            
 
             //console.log(rangy.getSelection().getRangeAt(0));
 
@@ -197,8 +234,6 @@
             var rectList = sel.nativeRange.getClientRects();
             var div;
 
-            var scrollTop = $(window).scrollTop(),
-                scrollLeft = $(window).scrollLeft();
 
             var rect;
 
@@ -276,41 +311,26 @@
                 });
             }
 
+/*
+var range = document.createRange();
+range.selectNodeContents(someTextNode);
+var rects = range.getClientRects();
 
+var textNodeLeft = rects[0].left;            
+*/
             rangy.getSelection().collapseToEnd();
+
             //alert('collapse');
 
             //getClientRects
 
-            return;
-
-            console.log(rangy);
-
-            var range = rangy.createRange();
-
-
-
-            // All DOM Range methods and properties supported
-            range.selectNodeContents(document.body);
-
-            console.log(range);
-
-            //console.log(rangy.getSelection().getRangeAt(0));
-
-            return;
-
-            // Selection object based on those in Mozilla, WebKit and Opera
-            var sel = rangy.getSelection();
-            sel.removeAllRanges();
-            sel.addRange(range);
-
+            
         });
-
-        //attachEventHandler();
-
 
 
     }
+
+
 
 
 
