@@ -22,32 +22,33 @@ router.get('/proxy/image/:url', function (req, res) {
 
     var url = 'http://imgnews.naver.net/image/origin/079/2014/05/14/2596165.jpg';
 
- request({uri:url, encoding:'binary'}, function (error, response, body) {
-      if (!error && response.statusCode == 200) {
+    request({
+        uri: url,
+        encoding: 'binary'
+    }, function (error, response, body) {
+        if (!error && response.statusCode == 200) {
 
-        response.setEncoding('binary');
+            response.setEncoding('binary');
 
-              var data_uri_prefix = "data:" + response.headers["content-type"] + ";base64,";
-                var buf = new Buffer(body, 'binary');
-                var image = buf.toString('base64');
+            var data_uri_prefix = "data:" + response.headers["content-type"] + ";base64,";
+            var buf = new Buffer(body, 'binary');
+            var image = buf.toString('base64');
 
-                image = data_uri_prefix + image;        
+            image = data_uri_prefix + image;
 
-         var base64Data = new Buffer(body).toString('base64');
-        console.log('SUCCESES');
-        console.log(base64Data);
+            var base64Data = new Buffer(body).toString('base64');
 
-           res.jsonp({
-            code: 200,
-            message: 'ok',
-            result: {
-     
-     image: image
-            }
-        });        
-      }
-});
 
+            res.jsonp({
+                code: 200,
+                message: 'ok',
+                result: {
+
+                    image: image
+                }
+            });
+        }
+    });
 
 
 
