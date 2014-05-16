@@ -19,7 +19,7 @@
   background: #fff2a8; }
 .use-marker * {
   /*cursor:pointer !important;*/
-  cursor: url(/images/marker-pen.png), auto;
+  /*cursor:url(/images/marker-pen.png), auto;*/
   /*
   url(smiley.gif),url(myBall.cur),auto
   */ }
