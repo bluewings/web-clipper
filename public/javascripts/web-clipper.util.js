@@ -3,6 +3,8 @@
 
     'use strict';
 
+    var $ = jQuery;
+
     var app = angular.module('webClipper', []);
 
     app.service('clipCache', function ($q) {
@@ -41,7 +43,7 @@
             return deferred.promise;
         }
 
-        $(window).on('message', function (event) {
+        $(window).bind('message', function (event) {
 
             var data;
 

@@ -234,13 +234,13 @@
                 }
             };
 
-            $(window).on('resize', function (event) {
+            $(window).bind('resize', function (event) {
 
                 $scope.func.renderSelection($scope.data.selections);
 
             });
 
-            $(document.body).on('mouseup', function () {
+            $(document.body).bind('mouseup', function () {
 
                 var range, inx;
 
@@ -354,13 +354,23 @@
         var resources = [],
             noConflict = false;
 
-            
+         //alert($)   ;
+         //alert(jindo);
+
+         //alert(window.$ === window.jindo);
+
+         
 
         if (window.jQuery === undefined) {
             resources.push(CONFIG.REMOTE_HOST + '/components/jquery/dist/jquery.min.js');
-        } else if (window.$ && window.$ !== window.jQuery) {
+        } else if (window.$ && !window.$.fx) {
             noConflict = true;
         }
+
+//alert(noConflict);
+        //alert(window.jQuery);
+
+        //alert(window.$);
 
         resources.push(CONFIG.REMOTE_HOST + '/components/angular/angular.min.js');
         resources.push(CONFIG.REMOTE_HOST + '/components/html2canvas/build/html2canvas.min.js');
@@ -372,7 +382,7 @@
             loadResources([CONFIG.REMOTE_HOST + '/javascripts/web-clipper.util.js'], function () {
 
                 if (noConflict) {
-                    window.$.noConflict();
+                    window.jQuery.noConflict();
                 }
                 $ = window.jQuery;
                 initialize();
