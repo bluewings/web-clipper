@@ -1,9 +1,13 @@
+@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+@import url(http://fonts.googleapis.com/css?family=Play:400,700);
+
+
+
 @font-face {
     font-family: 'Glyphicons Halflings';
     src: url("/components/bootstrap/dist/fonts/glyphicons-halflings-regular.eot");
     src: url("/components/bootstrap/dist/fonts/glyphicons-halflings-regular.eot?#iefix") format("embedded-opentype"), url("/components/bootstrap/dist/fonts/glyphicons-halflings-regular.woff") format("woff"), url("/components/bootstrap/dist/fonts/glyphicons-halflings-regular.ttf") format("truetype"), url("/components/bootstrap/dist/fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular") format("svg");
 }
-
 
 @font-face {
     font-family: 'Play';
@@ -19,6 +23,9 @@
     font-weight: 700;
     src: local("Play-Bold"), url(http://themes.googleusercontent.com/static/fonts/play/v4/ZzUearZLklGfoL18Ti0GaQ.woff) format("woff");
 }
+
+
+
 * {
     cursor:url(/images/marker-pen.png) !important;
 }
@@ -35,11 +42,18 @@
     }
 }
 
+body {
+    margin-right:300px !important;
+}
+
 .web-clipper-widget {
     font-family: Play;
     font-size: 16px;
     color: #ccc;
-    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.3);
+    
+    font-family: Nanum Gothic,AppleGothic,sans-serif;
+font-size: 12px;
+
     .control {
         position: fixed;
         padding:20px;
@@ -47,11 +61,11 @@
         text-align:left;
         top: 0;
         bottom: 0;
-        left: 0;
-        z-index: 1000;
+        right: 0;
+        z-index: 100000;
         background-color: rgba(0, 0, 0, 0.6);
         display: none;
-        width: 150px;
+        width: 300px;
         .btn {
             outline:none;
             display: inline-block;
@@ -83,6 +97,29 @@
             color: #333;
             background-color: #fff;
             border-color: #ccc;
+            }
+        }
+
+        .page-list {
+            margin:0;
+            padding:0;
+            li {
+                position:relative;
+                background-color:#fff;
+                box-sizing:border-box;
+                margin-bottom:10px;
+                padding:10px;
+                .detail {
+                    position:absolute;
+                    top:0;left:-300px;
+                    width:300px;
+                    background-color:#fff;
+                    border:2px solid gray;
+                    text-shadow:none;
+                    padding:20px;
+                    color:#000;
+                    box-sizing:border-box;
+                }
             }
         }
 

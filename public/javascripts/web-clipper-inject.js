@@ -1,4 +1,4 @@
-/*jslint browser: true, unparam: true, indent: 4 */
+﻿/*jslint browser: true, unparam: true, indent: 4 */
 /*global rangy: true */
 (function () {
 
@@ -52,55 +52,7 @@
 
         app = angular.module('web-clipper-widget', ['webClipper']);
 
-        app.factory('cache', function () {
-
-            return {
-                set: function (key, value) {
-                    localStorage.setItem(key, angular.toJson(value));
-                },
-                get: function (key) {
-                    return angular.fromJson(localStorage.getItem(CONFIG.ARCHIVE_KEY));
-                }
-            };
-        });
-
-        app.service('clipper', function () {
-
-            var service;
-
-            function getInfo(elem, selectors) {
-
-                var search;
-
-                do {
-                    search = elem.find(selectors.shift());
-                } while (search && search.size() === 0 && selectors.length > 0);
-
-                if (search.size() > 0) {
-                    return $.trim(search.attr('content') || search.text());
-                }
-                return '';
-            }
-
-            service = {
-                summarize: function (elem) {
-
-                    elem = elem || $('html');
-                    return {
-                        location: location.href,
-                        title: getInfo(elem, ['meta[property="og:title"]', 'meta[property="twitter:title"]', 'title']),
-                        desc: getInfo(elem, ['meta[property="og:description"]', 'meta[property="twitter:description"]', 'p']),
-                        thumb: getInfo(elem, ['meta[property="og:image"]', 'meta[property="twitter:image:src"]', 'meta[property="twitter:image"]', 'image'])
-                    };
-                }
-            };
-
-            return service;
-        });
-
-        app.controller('clipper-main', function ($scope, $element, $http, clipper, cache, clipUtil, clipCache) {
-
-            var cacheData = cache.get(CONFIG.ARCHIVE_KEY);
+        app.controller('clipper-main', function ($scope, $element, $http, clipUtil, clipCache) {
 
             ngApp.scope = $scope;
             ngApp.element = $element;
@@ -109,27 +61,41 @@
                 showWidget: true,
                 useMarker: true,
                 data: clipUtil.summarize(),
-                pages: cacheData || {},
+                _pages: {},
+                pages: [],
                 selections: []
             };
 
-            console.log('>>> CACHE <<<');
-            console.log(clipCache);
+            $scope.$watch('data._pages', function(newValue, oldValue) {
+
+                
+                $scope.data.pages = [];
+
+     angular.forEach(newValue, function(value, key){
+
+        $scope.data.pages.push(value);
+     } );                    
 
 
 
-            clipCache.get(CONFIG.ARCHIVE_KEY).then(function(data) {
+            },true);
 
+            clipCache.get(CONFIG.ARCHIVE_KEY).then(function (data) {
 
-                console.log('promoseget result : ' + data);
-                console.log(data);
+                if (!data || typeof data !== 'object') {
+                    data = {};
+                }
+                $scope.data._pages = data;
+                if ($scope.data._pages[location.href]) {
+                    $scope.data.selections = $scope.data._pages[location.href].selections;
 
+                    $(window).trigger('resize');
+                }
             });
+
             console.log('get exec');
 
-            if ($scope.data.pages[location.href]) {
-                $scope.data.selections = $scope.data.pages[location.href].selections;
-            }
+
 
             /* 이미지 프록시 테스트
             $http.jsonp('http://127.0.0.1:2000/proxy/image/test?callback=JSON_CALLBACK').success(function (data) {
@@ -151,25 +117,62 @@
                 }
             });
 
+            var focused;
+
             $scope.func = {
                 toggleMarker: function () {
 
                     $scope.data.useMarker = $scope.data.useMarker ? false : true;
                 },
+                forus: function(target) {
+
+
+                    if (focused) {
+                        delete focused._focus;
+                    }
+                    target._focus = true;
+                    focused = target;
+                },
+                forusout: function(target) {
+
+                    delete target._focus;
+                    focused = null;
+                },
+                remove: function(target) {
+
+                    if (!target) {
+                        $scope.data._pages = {};
+                    } else if ($scope.data._pages[target.href]) {
+                        delete $scope.data._pages[target.href];
+                    }
+                    clipCache.set(CONFIG.ARCHIVE_KEY, $scope.data._pages).then(function (data) {
+
+                        //alert('저장되었습니다.');
+                    });
+                },
                 save: function () {
 
                     var sum = clipUtil.summarize();
 
-                    if (!$scope.data.pages[location.href]) {
-                        $scope.data.pages[location.href] = {};
+                    if (!$scope.data._pages[location.href]) {
+                        $scope.data._pages[location.href] = {
+                            created: (new Date()).toString()
+                        };
                     }
-                    $scope.data.pages[location.href].href = location.href;
-                    $scope.data.pages[location.href].title = sum.title;
-                    $scope.data.pages[location.href].desc = sum.desc;
-                    $scope.data.pages[location.href].thumb = sum.thumb;
-                    $scope.data.pages[location.href].selections = $scope.data.selections;
+                    $scope.data._pages[location.href].href = location.href;
+                    $scope.data._pages[location.href].title = sum.title;
+                    $scope.data._pages[location.href].desc = sum.desc;
+                    $scope.data._pages[location.href].thumb = sum.thumb;
+                    $scope.data._pages[location.href].selections = $scope.data.selections;
 
-                    cache.set(CONFIG.ARCHIVE_KEY, $scope.data.pages);
+                    //cache.set(CONFIG.ARCHIVE_KEY, $scope.data._pages);
+
+
+                    clipCache.set(CONFIG.ARCHIVE_KEY, $scope.data._pages).then(function (data) {
+
+                        alert('저장되었습니다.');
+                    });
+
                 },
                 renderSelection: function (selections, collapse) {
 
@@ -235,7 +238,7 @@
 
                 $scope.func.renderSelection($scope.data.selections);
 
-            }).trigger('resize');
+            });
 
             $(document.body).on('mouseup', function () {
 
@@ -329,7 +332,6 @@
 
 
 
-
     function initialize() {
 
         rangy.init();
@@ -351,6 +353,8 @@
 
         var resources = [],
             noConflict = false;
+
+            
 
         if (window.jQuery === undefined) {
             resources.push(CONFIG.REMOTE_HOST + '/components/jquery/dist/jquery.min.js');
@@ -418,6 +422,6 @@
 
         bootstrap();
 
-    }, 1);
+    }, 0);
 
 })();

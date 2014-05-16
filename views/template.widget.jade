@@ -4,19 +4,45 @@ div(ng-controller='clipper-main', ng-class='"web-clipper-widget" + (data.showWid
 		button.btn(ng-click='func.save()')
 			span.glyphicon.glyphicon-camera(style='font-size:18px')
 
-		button.btn(ng-click='data.useMarker = data.useMarker ? false : true;' ng-class='data.useMarker ? "" : "active"')
-			span.glyphicon.glyphicon-camera(style='font-size:18px')
+		
+
 		button.btn(ng-click='data.useMarker = data.useMarker ? false : true;' ng-class='data.useMarker ? "active" : ""')
 			span.glyphicon.glyphicon-pencil(style='font-size:18px')
 
+
+		button.btn(ng-click='func.remove()')
+			span.glyphicon.glyphicon-trash(style='font-size:18px')
+
+
+		br
+		input(type='text', ng-model='data.query')
+
+		ul.page-list
+			li(ng-repeat='page in data.pages | filter : data.query | orderBy : "created" : true',
+				ng-mouseover='func.forus(page)', ng-mouseout='func.forusout(page)')
+				button.btn(ng-click='func.remove(page)')
+					span.glyphicon.glyphicon-trash(style='font-size:18px')
+
+				a(ng-href='{{page.href}}')
+					//img(ng-src='{{page.thumb}}', height='46')
+					| {{page.title}}
+
+				div.detail(ng-if='page._focus')
+					h3 {{page.title}}
+					.well {{page.desc}}
+					img(ng-src='{{page.thumb}}', height='200')
+					ol
+						li(ng-repeat='selection in page.selections')
+							| {{selection.text}}
+				
 		ul
 			li
 				| Test
 			li
 				| Test 123
 
-		textarea(rows=40,cols=15,style='bottom:0;position:absolute;')
-			| {{data | json}}
+		textarea(rows=10,cols=15,style='bottom:0;position:absolute;')
+			| {{data.pages | json}}
 
 
 

@@ -1,3 +1,5 @@
+@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+@import url(http://fonts.googleapis.com/css?family=Play:400,700);
 @font-face {
   font-family: 'Glyphicons Halflings';
   src: url("/components/bootstrap/dist/fonts/glyphicons-halflings-regular.eot");
@@ -24,11 +26,15 @@
   url(smiley.gif),url(myBall.cur),auto
   */ }
 
+body {
+  margin-right: 300px !important; }
+
 .web-clipper-widget {
   font-family: Play;
   font-size: 16px;
   color: #ccc;
-  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.3); }
+  font-family: Nanum Gothic,AppleGothic,sans-serif;
+  font-size: 12px; }
   .web-clipper-widget .control {
     position: fixed;
     padding: 20px;
@@ -36,11 +42,11 @@
     text-align: left;
     top: 0;
     bottom: 0;
-    left: 0;
-    z-index: 1000;
+    right: 0;
+    z-index: 100000;
     background-color: rgba(0, 0, 0, 0.6);
     display: none;
-    width: 150px;
+    width: 300px;
     /*.btn-xs {
     
     /*font-size: 12px;
@@ -74,6 +80,26 @@
         color: #333;
         background-color: #fff;
         border-color: #ccc; }
+    .web-clipper-widget .control .page-list {
+      margin: 0;
+      padding: 0; }
+      .web-clipper-widget .control .page-list li {
+        position: relative;
+        background-color: #fff;
+        box-sizing: border-box;
+        margin-bottom: 10px;
+        padding: 10px; }
+        .web-clipper-widget .control .page-list li .detail {
+          position: absolute;
+          top: 0;
+          left: -300px;
+          width: 300px;
+          background-color: #fff;
+          border: 2px solid gray;
+          text-shadow: none;
+          padding: 20px;
+          color: #000;
+          box-sizing: border-box; }
   .web-clipper-widget .pointer {
     width: 20px;
     height: 20px;
