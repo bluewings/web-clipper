@@ -63,22 +63,26 @@
                 data: clipUtil.summarize(),
                 _pages: {},
                 pages: [],
-                selections: []
+                selections: [],
+                current: {
+                    favorite: false,
+                    selections: []
+                }
             };
 
-            $scope.$watch('data._pages', function(newValue, oldValue) {
+            $scope.$watch('data._pages', function (newValue, oldValue) {
 
-                
+
                 $scope.data.pages = [];
 
-     angular.forEach(newValue, function(value, key){
+                angular.forEach(newValue, function (value, key) {
 
-        $scope.data.pages.push(value);
-     } );                    
+                    $scope.data.pages.push(value);
+                });
 
 
 
-            },true);
+            }, true);
 
             clipCache.get(CONFIG.ARCHIVE_KEY).then(function (data) {
 
@@ -87,7 +91,7 @@
                 }
                 $scope.data._pages = data;
                 if ($scope.data._pages[location.href]) {
-                    $scope.data.selections = $scope.data._pages[location.href].selections;
+                    $scope.data.current.selections = $scope.data._pages[location.href].selections;
 
                     $(window).trigger('resize');
                 }
@@ -120,11 +124,30 @@
             var focused;
 
             $scope.func = {
+                toggleReveal: function() {
+
+                    var body = $(document.body);
+                    if (body.hasClass('web-clipper-open')) {
+
+                        body.removeClass('web-clipper-open');
+
+                    } else {
+
+                        body.addClass('web-clipper-open');
+
+                    }
+
+                },
+                toggleFavorite: function() {
+
+                    $scope.data.current.favorite = $scope.data.current.favorite ? false : true;
+
+                },
                 toggleMarker: function () {
 
                     $scope.data.useMarker = $scope.data.useMarker ? false : true;
                 },
-                forus: function(target) {
+                forus: function (target) {
 
 
                     if (focused) {
@@ -133,12 +156,12 @@
                     target._focus = true;
                     focused = target;
                 },
-                forusout: function(target) {
+                forusout: function (target) {
 
                     delete target._focus;
                     focused = null;
                 },
-                remove: function(target) {
+                remove: function (target) {
 
                     if (!target) {
                         $scope.data._pages = {};
@@ -163,7 +186,7 @@
                     $scope.data._pages[location.href].title = sum.title;
                     $scope.data._pages[location.href].desc = sum.desc;
                     $scope.data._pages[location.href].thumb = sum.thumb;
-                    $scope.data._pages[location.href].selections = $scope.data.selections;
+                    $scope.data._pages[location.href].selections = $scope.data.current.selections;
 
                     //cache.set(CONFIG.ARCHIVE_KEY, $scope.data._pages);
 
@@ -236,7 +259,7 @@
 
             $(window).bind('resize', function (event) {
 
-                $scope.func.renderSelection($scope.data.selections);
+                $scope.func.renderSelection($scope.data.current.selections);
 
             });
 
@@ -291,13 +314,13 @@
 
 
 
-                if (!$scope.data.selections) {
+                if (!$scope.data.current.selections) {
 
-                    $scope.data.selections = [];
+                    $scope.data.current.selections = [];
                 }
 
                 $scope.$apply(function () {
-                    $scope.data.selections.push(JSON.parse(JSON.stringify(data)));
+                    $scope.data.current.selections.push(JSON.parse(JSON.stringify(data)));
                 });
 
 
@@ -316,7 +339,7 @@
 
 
 
-                $scope.func.renderSelection($scope.data.selections);
+                $scope.func.renderSelection($scope.data.current.selections);
 
                 rangy.getSelection().collapseToEnd();
 
@@ -354,12 +377,12 @@
         var resources = [],
             noConflict = false;
 
-         //alert($)   ;
-         //alert(jindo);
+        //alert($)   ;
+        //alert(jindo);
 
-         //alert(window.$ === window.jindo);
+        //alert(window.$ === window.jindo);
 
-         
+
 
         if (window.jQuery === undefined) {
             resources.push(CONFIG.REMOTE_HOST + '/components/jquery/dist/jquery.min.js');
@@ -367,7 +390,7 @@
             noConflict = true;
         }
 
-//alert(noConflict);
+        //alert(noConflict);
         //alert(window.jQuery);
 
         //alert(window.$);

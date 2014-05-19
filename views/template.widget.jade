@@ -1,6 +1,26 @@
 div(ng-controller='clipper-main', ng-class='"web-clipper-widget" + (data.showWidget ? " show" : "")')
 	.control
 
+		.reveal-btn-group
+
+
+
+			button(ng-click='func.toggleReveal()')
+				span.glyphicon.glyphicon-chevron-left
+
+			button(ng-click='func.toggleFavorite()')
+				span.glyphicon(style='top:2px',
+					ng-class='"glyphicon-heart" + (data.current.favorite ? \"-empty\" : \"\")')
+
+			button(ng-click='data.useMarker = data.useMarker ? false : true;',
+				ng-class='data.useMarker ? "active" : ""')
+				span.glyphicon.glyphicon-pencil(style='left:0;top:2px')
+
+
+		button.btn(ng-click='func.toggleFavorite()')
+			span.glyphicon(style='font-size:18px',
+				ng-class='"glyphicon-star" + (data.current.favorite ? \"-empty\" : \"\")')
+
 		button.btn(ng-click='func.save()')
 			span.glyphicon.glyphicon-camera(style='font-size:18px')
 
@@ -20,6 +40,7 @@ div(ng-controller='clipper-main', ng-class='"web-clipper-widget" + (data.showWid
 		ul.page-list
 			li(ng-repeat='page in data.pages | filter : data.query | orderBy : "created" : true',
 				ng-mouseover='func.forus(page)', ng-mouseout='func.forusout(page)')
+				.thumb(style='background-image:url({{page.thumb}})')
 				button.btn(ng-click='func.remove(page)')
 					span.glyphicon.glyphicon-trash(style='font-size:18px')
 

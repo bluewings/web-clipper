@@ -27,7 +27,12 @@
   */ }
 
 body {
-  margin-right: 300px !important; }
+  -webkit-transition: margin-right 0.3s; }
+  body.web-clipper-open {
+    margin-right: 400px !important;
+    width: auto; }
+    body.web-clipper-open .control {
+      right: 0; }
 
 .web-clipper-widget {
   font-family: Play;
@@ -42,17 +47,58 @@ body {
     text-align: left;
     top: 0;
     bottom: 0;
-    right: 0;
-    z-index: 100000;
+    right: -400px;
+    z-index: 2147483646;
     background-color: rgba(0, 0, 0, 0.6);
     display: none;
-    width: 300px;
+    width: 400px;
+    -webkit-transition: right 0.3s;
     /*.btn-xs {
     
     /*font-size: 12px;
     line-height: 1.5;
     border-radius: 3px;
 }*/ }
+    .web-clipper-widget .control .reveal-btn-group {
+      position: absolute;
+      top: 10px;
+      left: -41px;
+      width: 41px;
+      /*border: 1px solid #777;
+      border-radius: 5px;
+      border-radius: 5px;
+      
+      border: 1px solid #ddd;*/
+      padding: 0px;
+      box-sizing: border-box; }
+      .web-clipper-widget .control .reveal-btn-group button {
+        width: 36px;
+        height: 36px;
+        /*border-radius:50%;*/
+        /*background-color:#fff;
+        border:1px solid #ddd;*/
+        outline: none;
+        font-size: 20px;
+        text-align: center;
+        margin-bottom: 5px;
+        padding: 0;
+        background-color: rgba(255, 255, 255, 0.5);
+        border-radius: 5px;
+        border: none;
+        line-height: 100%;
+        cursor: pointer; }
+        .web-clipper-widget .control .reveal-btn-group button:hover {
+          /*background-color:rgba(0,0,0,0.2);*/ }
+        .web-clipper-widget .control .reveal-btn-group button.active {
+          background-color: rgba(0, 0, 0, 0.6);
+          color: #fff; }
+        .web-clipper-widget .control .reveal-btn-group button .glyphicon {
+          top: 0;
+          left: -1px;
+          -webkit-transition: color 0.5s; }
+          .web-clipper-widget .control .reveal-btn-group button .glyphicon.glyphicon-heart {
+            color: #ff2e3a;
+            /*color:#2cb400;*/ }
     .web-clipper-widget .control .btn {
       outline: none;
       display: inline-block;
@@ -89,6 +135,20 @@ body {
         box-sizing: border-box;
         margin-bottom: 10px;
         padding: 10px; }
+        .web-clipper-widget .control .page-list li * {
+          color: #000;
+          font-size: 12px; }
+        .web-clipper-widget .control .page-list li a {
+          text-decoration: none; }
+        .web-clipper-widget .control .page-list li .thumb {
+          width: 175px;
+          height: 175px;
+          background-size: cover;
+          background-position: 50% 50%;
+          border: 1px solid silver;
+          margin: -5px;
+          display: inline-block;
+          vertical-align: top; }
         .web-clipper-widget .control .page-list li .detail {
           position: absolute;
           top: 0;
