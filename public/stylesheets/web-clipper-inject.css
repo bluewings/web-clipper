@@ -27,12 +27,15 @@
   */ }
 
 body {
-  -webkit-transition: margin-right 0.3s; }
+  -webkit-transition: margin-right 0.5s; }
   body.web-clipper-open {
     margin-right: 400px !important;
     width: auto; }
     body.web-clipper-open .control {
       right: 0; }
+      body.web-clipper-open .control .reveal-btn-group {
+        width: 200px;
+        left: 10px; }
 
 .web-clipper-widget {
   font-family: Play;
@@ -52,7 +55,7 @@ body {
     background-color: rgba(0, 0, 0, 0.6);
     display: none;
     width: 400px;
-    -webkit-transition: right 0.3s;
+    -webkit-transition: right 0.5s;
     /*.btn-xs {
     
     /*font-size: 12px;
@@ -69,6 +72,7 @@ body {
       border-radius: 5px;
       
       border: 1px solid #ddd;*/
+      -webkit-transition: left 0.5s;
       padding: 0px;
       box-sizing: border-box; }
       .web-clipper-widget .control .reveal-btn-group button {

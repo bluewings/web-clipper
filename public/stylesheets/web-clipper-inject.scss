@@ -1,5 +1,5 @@
 $widget-width: 400px;
-$toggle-duration: 0.3s;
+$toggle-duration: 0.5s;
 
 @import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
 
@@ -52,6 +52,11 @@ body {
         width: auto;
         .control {
             right: 0;
+            .reveal-btn-group {
+                width:200px;
+                left: 10px;
+
+            }
         }
     }
 }
@@ -86,6 +91,7 @@ body {
             border-radius: 5px;
             
             border: 1px solid #ddd;*/
+            -webkit-transition: left $toggle-duration;
 
 
             padding:0px;
