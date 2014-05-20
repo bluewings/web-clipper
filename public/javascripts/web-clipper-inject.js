@@ -1,20 +1,20 @@
-﻿/*jslint browser: true, unparam: true, indent: 4 */
+/*jslint browser: true, unparam: true, indent: 4 */
 /*global rangy: true */
 (function () {
 
     'use strict';
 
-    var $, view, app;
+    var $, view, app, body;
 
     var CONFIG, URL;
 
     var SUCCESS = 200,
         ELEMENT_NODE = 1,
-        TEXT_NODE = 3,
-        COMMENT_NODE = 8;
+        TEXT_NODE = 3;
 
     CONFIG = {
-        ARCHIVE_KEY: 'web-clip-pages',
+        ARCHIVE_PAGES_KEY: 'web-clip-pages',
+        ARCHIVE_STATUS_KEY: 'web-clip-status',
         REMOTE_HOST: 'http://127.0.0.1:2000'
     };
 
@@ -23,6 +23,8 @@
     };
 
     function initView(callback) {
+
+        body = $(document.body);
 
         view = {
             container: null
@@ -48,16 +50,179 @@
 
     function initNgModule(elen) {
 
-        var ngApp = {};
-
         app = angular.module('web-clipper-widget', ['webClipper']);
 
-        app.controller('clipper-main', function ($scope, $element, $http, clipUtil, clipCache) {
+        app.controller('clipper-main', function ($scope, $element, $http, $timeout, clipUtil, clipCache) {
 
-            ngApp.scope = $scope;
-            ngApp.element = $element;
+            var timer, syncStatus = true;
 
             $scope.data = {
+                status: {
+                    asideOpen: false,
+                    mode: null,
+                    listType: 'tile'
+                },
+                pages: {},
+                _this: null // current page reference
+            };
+
+            if (syncStatus) {
+                clipCache.sync($scope, 'data.status', CONFIG.ARCHIVE_STATUS_KEY);
+            } else {
+                $scope.$watch('data.status', function (newValue, oldValue) {
+                    if (newValue) {
+                        clipCache.set(CONFIG.ARCHIVE_STATUS_KEY, newValue);
+                        if (newValue.asideOpen === true) {
+                            body.addClass('web-clipper-open');
+                        } else {
+                            body.removeClass('web-clipper-open');
+                        }
+                    }
+                }, true);
+                clipCache.get(CONFIG.ARCHIVE_STATUS_KEY).then(function (value) {
+                    if (value && value.asideOpen !== undefined) {
+                        $scope.data.status = value;
+                    }
+                });
+            }
+
+            $scope.$watch('data.status.asideOpen', function (newValue, oldValue) {
+
+                if (newValue === true) {
+                    body.addClass('web-clipper-open');
+                } else {
+                    body.removeClass('web-clipper-open');
+                }
+            });
+
+            $scope.$watch('data._this', function (newValue, oldValue) {
+
+                if (!newValue || !newValue.href) {
+                    return;
+                }
+                if (newValue.favorite || (newValue.selections && newValue.selections.length > 0)) {
+                    if (!$scope.data.pages[newValue.href]) {
+                        newValue.created = (new Date()).toISOString();
+                        $scope.data.pages[newValue.href] = newValue;
+                    }
+                } else if ($scope.data.pages[newValue.href]) {
+                    delete $scope.data.pages[newValue.href];
+                }
+                $scope.func.renderSelection(newValue.selections);
+
+            }, true);
+
+            clipUtil.summarize().then(function (summary) {
+
+                $scope.data._this = {
+                    href: summary.href,
+                    title: summary.title,
+                    desc: summary.desc,
+                    thumb: summary.thumb
+                };
+                clipCache.sync($scope, 'data.pages', CONFIG.ARCHIVE_PAGES_KEY).then(function (pages) {
+                    pages = pages || {};
+
+                    if (pages && pages[$scope.data._this.href]) {
+                        console.log('first set 1');
+                        $scope.data._this = pages[$scope.data._this.href];
+                    }
+                });
+            });
+
+            $(document.body).bind('mouseup', function () {
+
+                var range, inx;
+
+                if ($scope.data.status.mode !== 'underline') {
+                    return;
+                }
+                try {
+                    range = rangy.getSelection().getRangeAt(0);
+                    rangy.getSelection().collapseToEnd();
+                } catch (ignore) {
+                    return;
+                }
+                if (range.startContainer === range.endContainer && range.startOffset === range.endOffset) {
+                    return;
+                }
+                if (!$scope.data._this.selections) {
+                    $scope.data._this.selections = [];
+                }
+                $scope.$apply(function () {
+                    $scope.data._this.selections.push(JSON.parse(JSON.stringify({
+                        text: range.toString(),
+                        fullText: $.trim(range.commonAncestorContainer.textContent),
+                        start: {
+                            nodePath: clipUtil.getNodePath(range.startContainer),
+                            offset: range.startOffset
+                        },
+                        end: {
+                            nodePath: clipUtil.getNodePath(range.endContainer),
+                            offset: range.endOffset
+                        }
+                    })));
+                });
+            });
+
+            $scope.func = {
+                renderSelection: function (selections, collapse) {
+
+                    var inx, jnx, rectList, rect, div,
+                        range = rangy.createRange(),
+                        sel = rangy.getSelection(),
+                        scrollTop = $(window).scrollTop(),
+                        scrollLeft = $(window).scrollLeft();
+
+                    $('.selection').remove();
+
+                    if (!selections || selections.length === 0) {
+                        return;
+                    }
+                    for (inx = 0; inx < selections.length; inx++) {
+                        range.setStart(clipUtil.getNode(selections[inx].start.nodePath), selections[inx].start.offset);
+                        range.setEnd(clipUtil.getNode(selections[inx].end.nodePath), selections[inx].end.offset);
+                        sel = rangy.getSelection();
+                        sel.removeAllRanges();
+                        sel.addRange(range);
+                        rectList = range.nativeRange.getClientRects();
+                        for (jnx = 0; jnx < rectList.length; jnx++) {
+                            rect = rectList[jnx];
+                            if (rect.width > 0 && rect.height) {
+                                div = $('<div class="selection"></div>');
+                                $(document.body).append(div);
+                                div.css({
+                                    position: 'absolute',
+                                    zIndex: 20000,
+                                    top: rect.top + scrollTop,
+                                    left: rect.left + scrollLeft,
+                                    width: rect.width,
+                                    height: rect.height,
+                                    backgroundColor: 'rgba(255,0,0,0.1)'
+                                });
+                            }
+                        }
+                    }
+                    rangy.getSelection().collapseToEnd();
+                }
+            };
+
+            $(window).bind('resize', function (event) {
+
+                $scope.func.renderSelection($scope.data._this.selections);
+            });
+            body.delegate('.web-clipper-widget', 'transitionend', function (event) {
+
+                clearTimeout(timer);
+                timer = setTimeout(function () {
+                    $scope.func.renderSelection($scope.data._this.selections);
+                });
+            });
+            return;
+
+
+
+            /*$scope.data = {
                 showWidget: true,
                 useMarker: true,
                 data: clipUtil.summarize(),
@@ -84,20 +249,20 @@
 
             }, true);
 
-            clipCache.get(CONFIG.ARCHIVE_KEY).then(function (data) {
+            clipCache.get(CONFIG.ARCHIVE_PAGES_KEY).then(function (data) {
 
                 if (!data || typeof data !== 'object') {
                     data = {};
                 }
                 $scope.data._pages = data;
                 if ($scope.data._pages[location.href]) {
-                    $scope.data.current.selections = $scope.data._pages[location.href].selections;
+                    $scope.data._this.selections = $scope.data._pages[location.href].selections;
 
                     $(window).trigger('resize');
                 }
             });
 
-            console.log('get exec');
+            console.log('get exec');*/
 
 
 
@@ -112,9 +277,9 @@
             */
 
 
-            $scope.$watch('data.useMarker', function (after, before) {
+            /*$scope.$watch('data.status.mode', function (after, before) {
 
-                if (after) {
+                if (after === 'underline') {
                     $(document.body).addClass('use-marker');
                 } else {
                     $(document.body).removeClass('use-marker');
@@ -124,7 +289,7 @@
             var focused;
 
             $scope.func = {
-                toggleReveal: function() {
+                toggleReveal: function () {
 
                     var body = $(document.body);
                     if (body.hasClass('web-clipper-open')) {
@@ -138,14 +303,14 @@
                     }
 
                 },
-                toggleFavorite: function() {
+                toggleFavorite: function () {
 
-                    $scope.data.current.favorite = $scope.data.current.favorite ? false : true;
+                    $scope.data._this.favorite = $scope.data._this.favorite ? false : true;
 
                 },
                 toggleMarker: function () {
 
-                    $scope.data.useMarker = $scope.data.useMarker ? false : true;
+                    $scope.data.status.mode = $scope.data.status.mode === 'underline' ? null : 'underline';
                 },
                 forus: function (target) {
 
@@ -168,7 +333,7 @@
                     } else if ($scope.data._pages[target.href]) {
                         delete $scope.data._pages[target.href];
                     }
-                    clipCache.set(CONFIG.ARCHIVE_KEY, $scope.data._pages).then(function (data) {
+                    clipCache.set(CONFIG.ARCHIVE_PAGES_KEY, $scope.data._pages).then(function (data) {
 
                         //alert('저장되었습니다.');
                     });
@@ -179,181 +344,41 @@
 
                     if (!$scope.data._pages[location.href]) {
                         $scope.data._pages[location.href] = {
-                            created: (new Date()).toString()
+                            created: (new Date()).toISOString()
                         };
                     }
+
+
+
+
                     $scope.data._pages[location.href].href = location.href;
                     $scope.data._pages[location.href].title = sum.title;
                     $scope.data._pages[location.href].desc = sum.desc;
                     $scope.data._pages[location.href].thumb = sum.thumb;
-                    $scope.data._pages[location.href].selections = $scope.data.current.selections;
+                    $scope.data._pages[location.href].selections = $scope.data._this.selections;
 
-                    //cache.set(CONFIG.ARCHIVE_KEY, $scope.data._pages);
+                    //cache.set(CONFIG.ARCHIVE_PAGES_KEY, $scope.data._pages);
 
 
-                    clipCache.set(CONFIG.ARCHIVE_KEY, $scope.data._pages).then(function (data) {
+                    clipCache.set(CONFIG.ARCHIVE_PAGES_KEY, $scope.data._pages).then(function (data) {
 
                         alert('저장되었습니다.');
                     });
 
                 },
-                renderSelection: function (selections, collapse) {
 
-
-
-                    var range = rangy.createRange();
-                    var sel = rangy.getSelection();
-
-                    var inx, jnx, rectList, rect, div;
-                    var scrollTop = $(window).scrollTop(),
-                        scrollLeft = $(window).scrollLeft();
-
-                    $('.selection').remove();
-
-                    if (!selections || selections.length === 0) {
-                        return;
-                    }
-
-                    for (inx = 0; inx < selections.length; inx++) {
-
-                        range.setStart(clipUtil.getNode(selections[inx].start.nodePath), selections[inx].start.offset);
-                        range.setEnd(clipUtil.getNode(selections[inx].end.nodePath), selections[inx].end.offset);
-                        sel = rangy.getSelection();
-                        sel.removeAllRanges();
-                        sel.addRange(range);
-
-                        console.log(range);
-
-                        rectList = range.nativeRange.getClientRects();
-
-                        for (jnx = 0; jnx < rectList.length; jnx++) {
-
-                            rect = rectList[jnx];
-
-                            if (rect.width > 0 && rect.height) {
-                                div = $('<div class="selection"></div>');
-                                $(document.body).append(div);
-                                div.css({
-                                    position: 'absolute',
-                                    zIndex: 20000,
-                                    top: rect.top + scrollTop,
-                                    left: rect.left + scrollLeft,
-                                    width: rect.width,
-                                    height: rect.height,
-                                    backgroundColor: 'rgba(255,0,0,0.1)'
-
-                                });
-
-
-
-                            }
-
-
-
-                        }
-
-                    }
-                    rangy.getSelection().collapseToEnd();
-                }
             };
 
             $(window).bind('resize', function (event) {
 
-                $scope.func.renderSelection($scope.data.current.selections);
+                $scope.func.renderSelection($scope.data._this.selections);
 
             });
-
-            $(document.body).bind('mouseup', function () {
-
-                var range, inx;
-
-
-                var scrollTop = $(window).scrollTop(),
-                    scrollLeft = $(window).scrollLeft();
-
-                if (!$scope.data.useMarker) {
-                    return;
-
-                }
-
-                range = rangy.getSelection().getRangeAt(0);
-
-                if (range.startContainer === range.endContainer && range.startOffset === range.endOffset) {
-                    return;
-                }
-
-
-
-                var sel = rangy.getSelection().getRangeAt(0);
-
-
-                var rectList = sel.nativeRange.getClientRects();
-                var div;
-
-
-                var rect;
-
-
-
-                var data = {
-                    text: range.toString(),
-                    fullText: $.trim(range.commonAncestorContainer.textContent),
-                    start: {
-                        nodePath: clipUtil.getNodePath(range.startContainer),
-                        offset: range.startOffset
-                    },
-                    end: {
-                        nodePath: clipUtil.getNodePath(range.endContainer),
-                        offset: range.endOffset
-                    }
-                    //startText: $.trim(range.startContainer.textContent),
-                    //endText: $.trim(range.endContainer.textContent),
-                    //rects: rectList
-
-                };
-
-
-
-                if (!$scope.data.current.selections) {
-
-                    $scope.data.current.selections = [];
-                }
-
-                $scope.$apply(function () {
-                    $scope.data.current.selections.push(JSON.parse(JSON.stringify(data)));
-                });
-
-
-
-                /*data.fullText = data.fullText.split(data.startText);
-            //console.log();
-            data.fullText.shift();
-            data.fullText = data.startText + data.fullText.join('');
-            data.fullText = data.fullText.split(data.endText);
-            data.fullText.pop();
-            data.fullText = data.fullText.join('') + data.endText;*/
-
-                //selections.push(data);
-
-                rangy.getSelection().collapseToEnd();
-
-
-
-                $scope.func.renderSelection($scope.data.current.selections);
-
-                rangy.getSelection().collapseToEnd();
-
-
-
-            });
+*/
         });
 
         angular.bootstrap(elen, ['web-clipper-widget']);
-
-        return ngApp;
     }
-
-
 
     function initialize() {
 
@@ -365,35 +390,56 @@
         });
     }
 
+    function loadResources(srcList, callback) {
 
-    //    return;
+        var inx, element, type, elements = [];
 
+        if (typeof srcList === 'string') {
+            srcList = [srcList];
+        }
 
-    //////////////////////////
+        function cb_onload() {
 
+            var jnx, ready = true;
+            this.__ready = true;
+            for (jnx = 0; jnx < elements.length; jnx++) {
+                if (!elements[jnx].__ready) {
+                    ready = false;
+                    break;
+                }
+            }
+            if (ready && callback && typeof callback === 'function') {
+                callback();
+            }
+        }
+
+        for (inx = 0; inx < srcList.length; inx++) {
+            type = srcList[inx].match(/\.js$/) ? 'script' : 'css';
+            element = document.createElement(type === 'script' ? 'SCRIPT' : 'LINK');
+            elements.push(element);
+            element.onload = cb_onload;
+            if (type === 'script') {
+                element.type = 'text/javascript';
+                element.src = srcList[inx];
+            } else {
+                element.rel = 'stylesheet';
+                element.type = 'text/css';
+                element.href = srcList[inx];
+            }
+            document.body.appendChild(element);
+        }
+    }
 
     function bootstrap() {
 
         var resources = [],
             noConflict = false;
 
-        //alert($)   ;
-        //alert(jindo);
-
-        //alert(window.$ === window.jindo);
-
-
-
         if (window.jQuery === undefined) {
             resources.push(CONFIG.REMOTE_HOST + '/components/jquery/dist/jquery.min.js');
         } else if (window.$ && !window.$.fx) {
             noConflict = true;
         }
-
-        //alert(noConflict);
-        //alert(window.jQuery);
-
-        //alert(window.$);
 
         resources.push(CONFIG.REMOTE_HOST + '/components/angular/angular.min.js');
         resources.push(CONFIG.REMOTE_HOST + '/components/html2canvas/build/html2canvas.min.js');
@@ -413,48 +459,10 @@
         });
     }
 
-    function loadResources(srcList, callback) {
-
-        var inx, element, type, elements = [];
-
-        if (typeof srcList == 'string') {
-            srcList = [srcList];
-        }
-
-        for (inx = 0; inx < srcList.length; inx++) {
-            type = srcList[inx].match(/\.js$/) ? 'script' : 'css';
-            element = document.createElement(type == 'script' ? 'SCRIPT' : 'LINK');
-            elements.push(element);
-            element.onload = function () {
-                var inx, ready = true;
-                this.__ready = true;
-                for (inx = 0; inx < elements.length; inx++) {
-                    if (!elements[inx].__ready) {
-                        ready = false;
-                        break;
-                    }
-                }
-                if (ready && callback && typeof callback == 'function') {
-                    callback();
-                }
-            };
-            if (type == 'script') {
-                element.type = 'text/javascript';
-                element.src = srcList[inx];
-            } else {
-                element.rel = 'stylesheet';
-                element.type = 'text/css';
-                element.href = srcList[inx];
-            }
-
-            document.body.appendChild(element);
-        }
-    }
-
     setTimeout(function () {
 
         bootstrap();
 
     }, 0);
 
-})();
+}());

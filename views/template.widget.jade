@@ -1,25 +1,33 @@
-div(ng-controller='clipper-main', ng-class='"web-clipper-widget" + (data.showWidget ? " show" : "")')
+div(ng-controller='clipper-main', class='web-clipper-widget show')
 	.control
 
 		.reveal-btn-group
-
-
-
-			button(ng-click='func.toggleReveal()')
+			button(ng-click='data.status.asideOpen = data.status.asideOpen ? false : true')
 				span.glyphicon.glyphicon-chevron-left
 
-			button(ng-click='func.toggleFavorite()')
+			button(ng-click='data._this.favorite = data._this.favorite ? false : true')
 				span.glyphicon(style='top:2px',
-					ng-class='"glyphicon-heart" + (data.current.favorite ? \"-empty\" : \"\")')
+					ng-class='"glyphicon-heart" + (data._this.favorite ? \"\" : \"-empty\")')
 
-			button(ng-click='data.useMarker = data.useMarker ? false : true;',
-				ng-class='data.useMarker ? "active" : ""')
+			button(ng-click='data.status.mode = data.status.mode === "underline" ? null : "underline";',
+				ng-class='data.status.mode === "underline" ? "active" : ""')
 				span.glyphicon.glyphicon-pencil(style='left:0;top:2px')
 
 
 		br
 		br
 		br
+
+		h1 this
+
+		pre
+			| {{data._this | json}}
+
+		h1 pages
+
+		pre
+			| {{data.pages | json}}
+
 
 		button.btn(ng-click='func.toggleFavorite()')
 			span.glyphicon(style='font-size:18px',
