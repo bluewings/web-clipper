@@ -15,6 +15,38 @@ div(ng-controller='clipper-main', class='web-clipper-widget show')
 
 
 		br
+
+
+		ul.page-list
+			li(ng-repeat='page in data.pages | filter : data.query | orderBy : "created" : true',
+				ng-mouseover='func.forus(page)', ng-mouseout='func.forusout(page)')
+				//.thumb(style='background-image:url({{page.thumb.src}})')
+				button.btn(ng-click='func.remove(page)')
+					span.glyphicon.glyphicon-trash(style='font-size:18px')
+
+
+
+
+
+				a(ng-href='{{page.href}}')
+					//img(ng-src='{{page.thumb}}', height='46')
+					| {{page.title}}
+
+				span.badge(ng-show='page.selections.length')
+					span.glyphicon.glyphicon-pencil
+					| {{page.selections.length}}
+
+
+				h2
+					| [[[[[ {{page.selections.length}} ]]]]]
+
+				div.detail(ng-if='page._focus')
+					h3 {{page.title}}
+					.well {{page.desc}}
+					img(ng-src='{{page.thumb}}', height='200')
+					ol
+						li(ng-repeat='selection in page.selections')
+							| {{selection.text}}		
 		br
 		br
 
@@ -49,24 +81,6 @@ div(ng-controller='clipper-main', class='web-clipper-widget show')
 		br
 		input(type='text', ng-model='data.query')
 
-		ul.page-list
-			li(ng-repeat='page in data.pages | filter : data.query | orderBy : "created" : true',
-				ng-mouseover='func.forus(page)', ng-mouseout='func.forusout(page)')
-				.thumb(style='background-image:url({{page.thumb}})')
-				button.btn(ng-click='func.remove(page)')
-					span.glyphicon.glyphicon-trash(style='font-size:18px')
-
-				a(ng-href='{{page.href}}')
-					//img(ng-src='{{page.thumb}}', height='46')
-					| {{page.title}}
-
-				div.detail(ng-if='page._focus')
-					h3 {{page.title}}
-					.well {{page.desc}}
-					img(ng-src='{{page.thumb}}', height='200')
-					ol
-						li(ng-repeat='selection in page.selections')
-							| {{selection.text}}
 				
 		ul
 			li

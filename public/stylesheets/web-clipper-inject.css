@@ -45,7 +45,7 @@ body {
   font-size: 12px; }
   .web-clipper-widget .control {
     position: fixed;
-    padding: 20px;
+    padding: 50px 10px 10px;
     box-sizing: border-box;
     text-align: left;
     top: 0;
@@ -144,6 +144,22 @@ body {
           font-size: 12px; }
         .web-clipper-widget .control .page-list li a {
           text-decoration: none; }
+        .web-clipper-widget .control .page-list li .badge {
+          display: inline-block;
+          min-width: 10px;
+          padding: 3px 7px;
+          font-size: 12px !important;
+          font-weight: 700 !important;
+          color: #fff !important;
+          line-height: 1;
+          vertical-align: baseline;
+          white-space: nowrap;
+          text-align: center;
+          background-color: #999;
+          border-radius: 10px; }
+          .web-clipper-widget .control .page-list li .badge * {
+            font-size: 12px !important;
+            color: #fff !important; }
         .web-clipper-widget .control .page-list li .thumb {
           width: 175px;
           height: 175px;

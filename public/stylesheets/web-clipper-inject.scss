@@ -67,9 +67,12 @@ body {
     color: #ccc;
     font-family: Nanum Gothic,AppleGothic,sans-serif;
     font-size: 12px;
+
+
     .control {
         position: fixed;
-        padding: 20px;
+        padding: 50px 10px 10px;
+
         box-sizing: border-box;
         text-align: left;
         top: 0;
@@ -185,6 +188,25 @@ body {
                 a {
                     text-decoration: none;
                 }
+.badge {
+display: inline-block;
+min-width: 10px;
+padding: 3px 7px;
+font-size: 12px !important;
+font-weight: 700 !important;
+color: #fff !important;
+* {
+   font-size: 12px !important;
+
+color: #fff !important; 
+}
+line-height: 1;
+vertical-align: baseline;
+white-space: nowrap;
+text-align: center;
+background-color: #999;
+border-radius: 10px;
+}                   
                 .thumb {
                     width: 175px;
                     height: 175px;
