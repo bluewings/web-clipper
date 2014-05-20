@@ -7,7 +7,7 @@
     ],    
     "content_scripts": [{
         "matches": [
-            "http://*.naver.com/*"
+            "http://*/*"
         ],
         "js": [
             "script/jquery-1.7.1.min.js",
