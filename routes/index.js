@@ -16,6 +16,16 @@ router.get('/', function (req, res) {
     });
 });
 
+router.get('/globalStorage', function (req, res) {
+
+    res.render('storage', {
+        title: 'globalStorage',
+        javascripts: [
+            '/javascripts/storage.js'
+        ]
+    });
+});
+
 router.get('/proxy/image/:url', function (req, res) {
 
     var request = require('request');

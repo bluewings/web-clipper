@@ -1,3 +1,5 @@
+@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+@import url(http://fonts.googleapis.com/css?family=Play:400,700);
 @font-face {
   font-family: 'Glyphicons Halflings';
   src: url("/components/bootstrap/dist/fonts/glyphicons-halflings-regular.eot");
@@ -19,34 +21,88 @@
   background: #fff2a8; }
 .use-marker * {
   /*cursor:pointer !important;*/
-  cursor: url(/images/marker-pen.png), auto;
+  /*cursor:url(/images/marker-pen.png), auto;*/
   /*
   url(smiley.gif),url(myBall.cur),auto
   */ }
+
+body {
+  -webkit-transition: margin-right 0.5s; }
+  body.web-clipper-open {
+    margin-right: 400px !important;
+    width: auto; }
+    body.web-clipper-open .control {
+      right: 0; }
+      body.web-clipper-open .control .reveal-btn-group {
+        width: 200px;
+        left: 10px; }
 
 .web-clipper-widget {
   font-family: Play;
   font-size: 16px;
   color: #ccc;
-  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.3); }
+  font-family: Nanum Gothic,AppleGothic,sans-serif;
+  font-size: 12px; }
   .web-clipper-widget .control {
     position: fixed;
-    padding: 20px;
+    padding: 50px 10px 10px;
     box-sizing: border-box;
     text-align: left;
     top: 0;
     bottom: 0;
-    left: 0;
-    z-index: 1000;
+    right: -400px;
+    z-index: 2147483646;
     background-color: rgba(0, 0, 0, 0.6);
     display: none;
-    width: 150px;
+    width: 400px;
+    -webkit-transition: right 0.5s;
     /*.btn-xs {
     
     /*font-size: 12px;
     line-height: 1.5;
     border-radius: 3px;
 }*/ }
+    .web-clipper-widget .control .reveal-btn-group {
+      position: absolute;
+      top: 10px;
+      left: -41px;
+      width: 41px;
+      /*border: 1px solid #777;
+      border-radius: 5px;
+      border-radius: 5px;
+      
+      border: 1px solid #ddd;*/
+      -webkit-transition: left 0.5s;
+      padding: 0px;
+      box-sizing: border-box; }
+      .web-clipper-widget .control .reveal-btn-group button {
+        width: 36px;
+        height: 36px;
+        /*border-radius:50%;*/
+        /*background-color:#fff;
+        border:1px solid #ddd;*/
+        outline: none;
+        font-size: 20px;
+        text-align: center;
+        margin-bottom: 5px;
+        padding: 0;
+        background-color: rgba(255, 255, 255, 0.5);
+        border-radius: 5px;
+        border: none;
+        line-height: 100%;
+        cursor: pointer; }
+        .web-clipper-widget .control .reveal-btn-group button:hover {
+          /*background-color:rgba(0,0,0,0.2);*/ }
+        .web-clipper-widget .control .reveal-btn-group button.active {
+          background-color: rgba(0, 0, 0, 0.6);
+          color: #fff; }
+        .web-clipper-widget .control .reveal-btn-group button .glyphicon {
+          top: 0;
+          left: -1px;
+          -webkit-transition: color 0.5s; }
+          .web-clipper-widget .control .reveal-btn-group button .glyphicon.glyphicon-heart {
+            color: #ff2e3a;
+            /*color:#2cb400;*/ }
     .web-clipper-widget .control .btn {
       outline: none;
       display: inline-block;
@@ -74,6 +130,56 @@
         color: #333;
         background-color: #fff;
         border-color: #ccc; }
+    .web-clipper-widget .control .page-list {
+      margin: 0;
+      padding: 0; }
+      .web-clipper-widget .control .page-list li {
+        position: relative;
+        background-color: #fff;
+        box-sizing: border-box;
+        margin-bottom: 10px;
+        padding: 10px; }
+        .web-clipper-widget .control .page-list li * {
+          color: #000;
+          font-size: 12px; }
+        .web-clipper-widget .control .page-list li a {
+          text-decoration: none; }
+        .web-clipper-widget .control .page-list li .badge {
+          display: inline-block;
+          min-width: 10px;
+          padding: 3px 7px;
+          font-size: 12px !important;
+          font-weight: 700 !important;
+          color: #fff !important;
+          line-height: 1;
+          vertical-align: baseline;
+          white-space: nowrap;
+          text-align: center;
+          background-color: #999;
+          border-radius: 10px; }
+          .web-clipper-widget .control .page-list li .badge * {
+            font-size: 12px !important;
+            color: #fff !important; }
+        .web-clipper-widget .control .page-list li .thumb {
+          width: 175px;
+          height: 175px;
+          background-size: cover;
+          background-position: 50% 50%;
+          border: 1px solid silver;
+          margin: -5px;
+          display: inline-block;
+          vertical-align: top; }
+        .web-clipper-widget .control .page-list li .detail {
+          position: absolute;
+          top: 0;
+          left: -300px;
+          width: 300px;
+          background-color: #fff;
+          border: 2px solid gray;
+          text-shadow: none;
+          padding: 20px;
+          color: #000;
+          box-sizing: border-box; }
   .web-clipper-widget .pointer {
     width: 20px;
     height: 20px;
