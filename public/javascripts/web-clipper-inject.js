@@ -50,7 +50,65 @@
 
     function initNgModule(elen) {
 
-        app = angular.module('web-clipper-widget', ['webClipper']);
+        app = angular.module('web-clipper-widget', ['webClipper', 'ngAnimate']);
+
+        app.directive("masonry", function () {
+            var NGREPEAT_SOURCE_RE = '<!-- ngRepeat: ((.*) in ((.*?)( track by (.*))?)) -->';
+            return {
+                compile: function(element, attrs) {
+                    // auto add animation to brick element
+                    var animation = attrs.ngAnimate || "'masonry'";
+                    var $brick = element.children();
+                    $brick.attr("ng-animate", animation);
+                    
+                    // generate item selector (exclude leaving items)
+                    var type = $brick.prop('tagName');
+                    var itemSelector = type+":not([class$='-leave-active'])";
+                    
+                    return function (scope, element, attrs) {
+                        var options = angular.extend({
+                            itemSelector: itemSelector
+                        }, scope.$eval(attrs.masonry));
+                        
+                        // try to infer model from ngRepeat
+                        if (!options.model) { 
+                            var ngRepeatMatch = element.html().match(NGREPEAT_SOURCE_RE);
+                            if (ngRepeatMatch) {
+                                options.model = ngRepeatMatch[4];
+                            }
+                        }
+                        
+                        // initial animation
+                        element.addClass('masonry');
+                        
+                        // Wait inside directives to render
+                        setTimeout(function () {
+                            element.masonry(options);
+                            
+                            element.on("$destroy", function () {
+                                element.masonry('destroy')
+                            });
+                            
+                            if (options.model) {
+                                scope.$apply(function() {
+                                    scope.$watchCollection(options.model, function (_new, _old) {
+                                        if(_new == _old) return;
+                                        
+                                        // Wait inside directives to render
+                                        setTimeout(function () {
+                                            element.masonry("reload");
+                                        });
+                                        setTimeout(function () {
+                                            element.masonry("reload");
+                                        }, 100);
+                                    });
+                                });
+                            }
+                        });
+                    };
+                }
+            };
+        });
 
         app.controller('clipper-main', function ($scope, $element, $http, $timeout, clipUtil, clipCache) {
 
@@ -63,6 +121,7 @@
                     listType: 'tile'
                 },
                 pages: {},
+                _pages: [],
                 _this: null // current page reference
             };
 
@@ -94,6 +153,46 @@
                     body.removeClass('web-clipper-open');
                 }
             });
+
+            $scope.$watchCollection('data.pages', function (newValue, oldValue) {
+
+                var key, inx;
+
+                if (newValue) {
+
+                    newValue = JSON.parse(JSON.stringify(newValue));
+
+                    var newList = [];
+                    
+
+
+                    
+                    angular.forEach($scope.data._pages, function(value, key) {
+                        if (newValue[value.href]) {
+                            newList.push(value);
+                            delete newValue[value.href];
+                        }
+                    });
+
+                    angular.forEach(newValue, function(value, key) {
+                        //if (!$scope.data._pages[value.href]) {
+                            newList.push(value);
+                        //}
+                    });                    
+
+                    console.log(newList);
+
+                    $scope.data._pages = newList;
+                    /*
+
+                    //$scope.data._pages = [];
+                    for (key in $scope.data.pages) {
+                        if ($scope.data.pages.hasOwnProperty(key)) {
+                            $scope.data._pages.push($scope.data.pages[key]);
+                        }
+                    }*/
+                }
+            }, false);
 
             $scope.$watch('data._this', function (newValue, oldValue) {
 
@@ -134,12 +233,14 @@
 
                 var range, inx;
 
+                console.log('>>');
+
                 if ($scope.data.status.mode !== 'underline') {
                     return;
                 }
                 try {
                     range = rangy.getSelection().getRangeAt(0);
-                    rangy.getSelection().collapseToEnd();
+                    
                 } catch (ignore) {
                     return;
                 }
@@ -162,6 +263,7 @@
                             offset: range.endOffset
                         }
                     })));
+                    rangy.getSelection().collapseToEnd();
                 });
             });
 
@@ -442,13 +544,21 @@
         }
 
         resources.push(CONFIG.REMOTE_HOST + '/components/angular/angular.min.js');
+        //resources.push(CONFIG.REMOTE_HOST + '/components/angular-animate/angular-animate.min.js');
         resources.push(CONFIG.REMOTE_HOST + '/components/html2canvas/build/html2canvas.min.js');
         resources.push(CONFIG.REMOTE_HOST + '/components/rangy-1.3/rangy-core.js');
         resources.push(CONFIG.REMOTE_HOST + '/stylesheets/web-clipper-inject.css');
 
         loadResources(resources, function () {
 
-            loadResources([CONFIG.REMOTE_HOST + '/javascripts/web-clipper.util.js'], function () {
+            loadResources([
+                //CONFIG.REMOTE_HOST + '/components/isotope/dist/isotope.pkgd.min.js',
+                //CONFIG.REMOTE_HOST + '/components/jquery-masonry/dist/masonry.pkgd.min.js',
+                'http://cdnjs.cloudflare.com/ajax/libs/masonry/2.1.08/jquery.masonry.min.js',
+                CONFIG.REMOTE_HOST + '/components/angular-animate/angular-animate.min.js',
+
+                
+               CONFIG.REMOTE_HOST +  '/javascripts/web-clipper.util.js'], function() {
 
                 if (noConflict) {
                     window.jQuery.noConflict();

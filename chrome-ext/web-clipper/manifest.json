@@ -7,12 +7,8 @@
     ],    
     "content_scripts": [{
         "matches": [
-<<<<<<< HEAD
-            "http://*/*"
-=======
             "http://*.naver.com/*",
             "http://*.brickinside.com/*"
->>>>>>> d48925e859213803b1d2d3736e31f7de3d168960
         ],
         "js": [
             "script/jquery-1.7.1.min.js",

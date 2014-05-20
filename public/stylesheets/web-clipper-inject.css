@@ -29,13 +29,40 @@
 body {
   -webkit-transition: margin-right 0.5s; }
   body.web-clipper-open {
-    margin-right: 400px !important;
+    margin-right: 500px !important;
     width: auto; }
     body.web-clipper-open .control {
       right: 0; }
       body.web-clipper-open .control .reveal-btn-group {
         width: 200px;
         left: 10px; }
+
+.masonry,
+.masonry li {
+  /* apply before masonry add class */
+  position: absolute;
+  /* important to add it before enter animation start */
+  -webkit-transition-duration: .7s;
+  transition-duration: .7s;
+  -webkit-transition-property: all;
+  transition-property: all; }
+
+.masonry .masonry-enter {
+  /* limit animated properties for entering elements */
+  -webkit-transition-property: -webkit-transform, opacity;
+  transition-property: transform, opacity; }
+
+.masonry-enter,
+.masonry-leave.masonry-leave-active {
+  opacity: 0;
+  -webkit-transform: scale(0.1);
+  transform: scale(0.1); }
+
+.masonry-leave,
+.masonry-enter.masonry-enter-active {
+  opacity: 1;
+  -webkit-transform: scale(1);
+  transform: scale(1); }
 
 .web-clipper-widget {
   font-family: Play;
@@ -50,11 +77,11 @@ body {
     text-align: left;
     top: 0;
     bottom: 0;
-    right: -400px;
+    right: -500px;
     z-index: 2147483646;
     background-color: rgba(0, 0, 0, 0.6);
     display: none;
-    width: 400px;
+    width: 500px;
     -webkit-transition: right 0.5s;
     /*.btn-xs {
     
@@ -131,14 +158,26 @@ body {
         background-color: #fff;
         border-color: #ccc; }
     .web-clipper-widget .control .page-list {
-      margin: 0;
-      padding: 0; }
+      /*margin: 0;
+      padding: 0;*/
+      /*border: solid 1px #ccc;
+      padding: 10px 10px 0 0*/
+      margin-left: -10px; }
       .web-clipper-widget .control .page-list li {
+        /*width:33%;*/
+        display: inline-block;
+        width: 153.33333px;
+        /*height: 100px;*/
+        /*border: solid 1px #ccc;*/
+        margin: 0 0 10px 10px;
+        background: #eee;
+        /*width:100px;
+        display:inline-block;
         position: relative;
         background-color: #fff;
         box-sizing: border-box;
         margin-bottom: 10px;
-        padding: 10px; }
+        padding: 10px;*/ }
         .web-clipper-widget .control .page-list li * {
           color: #000;
           font-size: 12px; }
@@ -598,5 +637,44 @@ body {
     content: "\e199"; }
   .web-clipper-widget .glyphicon-tree-deciduous:before {
     content: "\e200"; }
+
+.masonry,
+.masonry li {
+  /* apply before masonry add class */
+  position: absolute;
+  /* important to add it before enter animation start */
+  -webkit-transition-duration: .7s;
+  transition-duration: .7s;
+  -webkit-transition-property: all;
+  transition-property: all; }
+
+.masonry .masonry-enter {
+  /* limit animated properties for entering elements */
+  -webkit-transition-property: -webkit-transform, opacity;
+  transition-property: transform, opacity; }
+
+.masonry-enter,
+.masonry-leave.masonry-leave-active {
+  opacity: 0;
+  -webkit-transform: scale(0.1);
+  transform: scale(0.1); }
+
+.masonry-leave,
+.masonry-enter.masonry-enter-active {
+  opacity: 1;
+  -webkit-transform: scale(1);
+  transform: scale(1); }
+
+.ng-enter,
+.ng-leave.ng-leave-active {
+  opacity: 0;
+  -webkit-transform: scale(0.1);
+  transform: scale(0.1); }
+
+.ng-leave,
+.ng-enter.ng-enter-active {
+  opacity: 1;
+  -webkit-transform: scale(1);
+  transform: scale(1); }
 
 /*# sourceMappingURL=web-clipper-inject.css.map */

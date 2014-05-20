@@ -356,6 +356,9 @@
                             height: 0
                         }
                     };
+                    if (data.thumb.src === 'http://static.news.naver.net/image/navernews_200x200_new.jpg') {
+                        data.thumb.src = '';
+                    }
                     if (data.thumb.src) {
                         img = document.createElement('img');
                         img.onload = function () {

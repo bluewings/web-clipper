@@ -16,12 +16,17 @@ div(ng-controller='clipper-main', class='web-clipper-widget show')
 
 		br
 
+		input(type='text', ng-model='data.query')
 
-		ul.page-list
-			li(ng-repeat='page in data.pages | filter : data.query | orderBy : "created" : true',
-				ng-mouseover='func.forus(page)', ng-mouseout='func.forusout(page)')
+		h2
+			| {{data.query}}
+
+
+		ul.page-list(masonry='true')
+			li.item(ng-repeat='page in data._pages | filter : data.query | orderBy : "created" : true')
+				img(ng-src='{{page.thumb.src}}', width='100%')
 				//.thumb(style='background-image:url({{page.thumb.src}})')
-				button.btn(ng-click='func.remove(page)')
+				//button.btn(ng-click='func.remove(page)')
 					span.glyphicon.glyphicon-trash(style='font-size:18px')
 
 
@@ -37,8 +42,6 @@ div(ng-controller='clipper-main', class='web-clipper-widget show')
 					| {{page.selections.length}}
 
 
-				h2
-					| [[[[[ {{page.selections.length}} ]]]]]
 
 				div.detail(ng-if='page._focus')
 					h3 {{page.title}}
@@ -79,7 +82,7 @@ div(ng-controller='clipper-main', class='web-clipper-widget show')
 
 
 		br
-		input(type='text', ng-model='data.query')
+		
 
 				
 		ul
@@ -88,13 +91,7 @@ div(ng-controller='clipper-main', class='web-clipper-widget show')
 			li
 				| Test 123
 
-<<<<<<< HEAD
-		textarea(rows=40,cols=10,style='bottom:0;position:absolute;')
-			| {{data | json}}
-=======
-		textarea(rows=10,cols=15,style='bottom:0;position:absolute;')
-			| {{data.pages | json}}
->>>>>>> d48925e859213803b1d2d3736e31f7de3d168960
+
 
 
 
