@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "homepage": "https://github.com/bluewings/web-clipper",
   "authors": [
-    "bluewings <mygenie3@naver.com>"
+    "Albert Cha <mygenie3@naver.com>"
   ],
   "license": "MIT",
   "ignore": [
@@ -14,12 +14,12 @@
     "tests"
   ],
   "dependencies": {
+    "angular-animate": "~1.2.16",
     "angular-bootstrap": "~0.11.0",
-    "bootstrap": "~3.1.1",
-    "isotope": "~2.0.0",
-    "html2canvas": "~0.4.1",
     "jquery-ui": "~1.10.4",
-    "rangy-1.3": "*",
-    "angular-sanitize": "~1.2.16"
+    "angular-sanitize": "~1.2.16",
+    "html2canvas": "~0.4.1",
+    "bootstrap": "~3.1.1",
+    "rangy-1.3": "*"
   }
 }

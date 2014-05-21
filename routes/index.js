@@ -16,6 +16,93 @@ router.get('/', function (req, res) {
     });
 });
 
+
+router.get('/share/:id', function (req, res) {
+
+    var fs = require("fs"),
+        path = require('path'),
+        filepath = path.join(__dirname, '..', 'public', 'works', req.params.id + '.json');
+
+    fs.readFile(filepath, 'utf8', function (err, data) {
+        if (err) {
+            res.jsonp({
+                code: 500,
+                message: err
+            });
+        } else {
+
+            //res.send(filepath + data);
+
+            res.render('share', {
+                title: 'Web Clipper',
+                stylesheets: ['/stylesheets/web-clipper.css'],
+                javascripts: [
+                    '/javascripts/web-clipper-share.js'
+                ],
+                data: data
+            });            
+        }
+    });
+
+    //res.send(JSON.stringify(req.params));
+});
+
+router.post('/fork', function (req, res) {
+
+    var fs = require("fs"),
+        path = require('path'),
+        id = (parseInt(Math.random() * 900000000 + 100000000, 10)).toString(36).substr(0, 5),
+        filename, jsonData;
+
+    if (req.body && req.body.json_string) {
+
+        filename = path.join(__dirname, '..', 'public', 'works', id + '.json');
+
+        try {
+            jsonData = JSON.parse(req.body.json_string);
+        } catch (ignore) {
+            // noop
+            jsonData = {};
+        }
+
+        fs.writeFile(filename, (req.body.json_string), function (err) {
+
+            if (err) {
+                /*res.send({
+                    code: 500,
+                    message: err
+                });*/
+            } else {
+                res.send('<script>top.window.postMessage("forkId:' + id + '", "*")</script>');
+                /*
+                res.jsonp({
+                    code: 200,
+                    message: 'ok',
+                    result: {
+                        id: id
+                    }
+                });*/
+            }
+        });
+
+
+        for (var key in res) {
+            if (typeof req[key] == 'function') {
+                console.log(key);
+            }
+
+        }
+
+        //console.log(jsonData);
+
+        //console.log(req.body);
+
+    }
+
+
+
+});
+
 router.get('/globalStorage', function (req, res) {
 
     res.render('storage', {

@@ -11,8 +11,8 @@
     app.service('clipCache', ['$q',
         function ($q) {
 
-            //var DEFAULT_URL = 'http://bluewings.github.io/globalStorage.html',
-            //DEFAULT_ORIGIN = 'http://bluewings.github.io';
+            var DEFAULT_URL = 'http://bluewings.github.io/globalStorage.html',
+                DEFAULT_ORIGIN = 'http://bluewings.github.io';
 
             var DEFAULT_URL = 'http://127.0.0.1:2000/globalStorage',
                 DEFAULT_ORIGIN = 'http://127.0.0.1:2000';
@@ -64,16 +64,19 @@
                 } catch (ignore) {
                     // noop
                 }
-                if (data._key && callback[data._key]) {
-                    callback[data._key](data);
-                    delete callback[data._key];
-                } else if (data._type) {
-                    if (owner !== myId && listener[data._type]) {
-                        for (inx = 0; inx < listener[data._type].length; inx++) {
-                            listener[data._type][inx](data.key, data.value);
+                if (data) {
+                    if (data._key && callback[data._key]) {
+                        callback[data._key](data);
+                        delete callback[data._key];
+                    } else if (data._type) {
+                        if (owner !== myId && listener[data._type]) {
+                            for (inx = 0; inx < listener[data._type].length; inx++) {
+                                listener[data._type][inx](data.key, data.value);
+                            }
                         }
-                    }
+                    }    
                 }
+                
             });
 
             function postMessage(message, userCallback) {
@@ -358,6 +361,9 @@
                     };
                     if (data.thumb.src === 'http://static.news.naver.net/image/navernews_200x200_new.jpg') {
                         data.thumb.src = '';
+                    }
+                    if (data.desc && data.desc.length > 200) {
+                        data.desc = data.desc.substr(0, 200) + '...';
                     }
                     if (data.thumb.src) {
                         img = document.createElement('img');

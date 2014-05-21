@@ -13,34 +13,96 @@ div(ng-controller='clipper-main', class='web-clipper-widget show')
 				ng-class='data.status.mode === "underline" ? "active" : ""')
 				span.glyphicon.glyphicon-pencil(style='left:0;top:2px')
 
+			button
+				span.glyphicon.glyphicon-camera(style='left:0;top:2px')
 
-		br
+		.wc-header(ng-show='data._this')
 
-		input(type='text', ng-model='data.query')
+			button.btn(ng-click='data.status.asideOpen = data.status.asideOpen ? false : true')
+				span.glyphicon.glyphicon-remove
 
-		h2
-			| {{data.query}}
+
+			button.btn(ng-click='data._this.favorite = data._this.favorite ? false : true')
+				span.glyphicon(style='top:2px',
+					ng-class='"glyphicon-heart" + (data._this.favorite ? \"\" : \"-empty\")')
+
+			button.btn(ng-click='data.status.mode = data.status.mode === "underline" ? null : "underline";',
+				ng-class='data.status.mode === "underline" ? "active" : ""')
+				span.glyphicon.glyphicon-pencil(style='left:0;top:2px')
+
+			button.btn
+				span.glyphicon.glyphicon-camera
+
+			button.btn(ng-click='func.fork()')
+				span.glyphicon.glyphicon-floppy-disk
+
+			button.btn
+				span.glyphicon.glyphicon-share-alt
+
+		div.pad
+
+			div.alert(ng-show='data.url')
+				a(ng-href='{{data.url}}', target='_blank')
+					| {{data.url}}
+
+			div.panel(ng-show='data._this', ng-class='data._this.thumb ? "" : "has-no-thumb"')
+				div.thumb(style='background-image:url({{data._this.thumb.src}})')
+				.panel-txt
+					strong
+						| {{data._this.title}}
+					span
+						| {{data._this.desc}}
+				ul.select-list
+					li(ng-repeat='each in data._this.selections')
+						div(ng-click='func.moveToSelection(each)', ng-bind-html='each.fullText | highlight: each.text')
+						button.btn(ng-click='func.removeSelection(each)')
+							span.glyphicon.glyphicon-remove
+
+
+
+						
+
+
+
+
+
+		div.pad
+
+			input.form-control.input-sm(type='text', ng-model='data.query', placeholder='filter')		
+
+
+
 
 
 		ul.page-list(masonry='true')
 			li.item(ng-repeat='page in data._pages | filter : data.query | orderBy : "created" : true')
-				img(ng-src='{{page.thumb.src}}', width='100%')
-				//.thumb(style='background-image:url({{page.thumb.src}})')
-				//button.btn(ng-click='func.remove(page)')
-					span.glyphicon.glyphicon-trash(style='font-size:18px')
+				img(ng-show='page.thumb', ng-src='{{page.thumb.src}}', width='100%')
+				
+				//span.glyphicon.glyphicon-trash(style='font-size:18px')
+				
+
+				.desc-txt
 
 
 
 
+					a(ng-href='{{page.href}}')
+						//img(ng-src='{{page.thumb}}', height='46')
+						| {{page.title}}
 
-				a(ng-href='{{page.href}}')
-					//img(ng-src='{{page.thumb}}', height='46')
-					| {{page.title}}
 
-				span.badge(ng-show='page.selections.length')
-					span.glyphicon.glyphicon-pencil
-					| {{page.selections.length}}
 
+				.desc-icon
+
+					span.glyphicon.glyphicon-heart(ng-show='page.favorite')
+
+					span(ng-show='page.selections.length')
+						span.glyphicon.glyphicon-pencil
+						strong
+							| {{page.selections.length}}
+
+					span.created
+						| {{page.created | date : 'MM-dd HH:mm'}}
 
 
 				div.detail(ng-if='page._focus')
@@ -50,55 +112,3 @@ div(ng-controller='clipper-main', class='web-clipper-widget show')
 					ol
 						li(ng-repeat='selection in page.selections')
 							| {{selection.text}}		
-		br
-		br
-
-		h1 this
-
-		pre
-			| {{data._this | json}}
-
-		h1 pages
-
-		pre
-			| {{data.pages | json}}
-
-
-		button.btn(ng-click='func.toggleFavorite()')
-			span.glyphicon(style='font-size:18px',
-				ng-class='"glyphicon-star" + (data.current.favorite ? \"-empty\" : \"\")')
-
-		button.btn(ng-click='func.save()')
-			span.glyphicon.glyphicon-camera(style='font-size:18px')
-
-		
-
-		button.btn(ng-click='data.useMarker = data.useMarker ? false : true;' ng-class='data.useMarker ? "active" : ""')
-			span.glyphicon.glyphicon-pencil(style='font-size:18px')
-
-
-		button.btn(ng-click='func.remove()')
-			span.glyphicon.glyphicon-trash(style='font-size:18px')
-
-
-		br
-		
-
-				
-		ul
-			li
-				| Test
-			li
-				| Test 123
-
-
-
-
-
-
-
-
-
-
-
-

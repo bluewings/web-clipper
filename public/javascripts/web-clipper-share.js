@@ -133,16 +133,15 @@
 
             $scope.data = {
                 status: {
-                    asideOpen: false,
+                    asideOpen: true,
                     mode: null,
                     listType: 'tile'
                 },
-                pages: {},
-                _pages: [],
-                _this: null // current page reference
+                pages: window._shared,
+                _pages: []
             };
 
-            if (syncStatus) {
+            /*if (syncStatus) {
                 clipCache.sync($scope, 'data.status', CONFIG.ARCHIVE_STATUS_KEY);
             } else {
                 $scope.$watch('data.status', function (newValue, oldValue) {
@@ -160,7 +159,7 @@
                         $scope.data.status = value;
                     }
                 });
-            }
+            }*/
 
             $scope.$watch('data.status.asideOpen', function (newValue, oldValue) {
 
@@ -227,7 +226,7 @@
 
             }, true);
 
-            clipUtil.summarize().then(function (summary) {
+            /*clipUtil.summarize().then(function (summary) {
 
                 $scope.data._this = {
                     href: summary.href,
@@ -243,7 +242,7 @@
                         $scope.data._this = pages[$scope.data._this.href];
                     }
                 });
-            });
+            });*/
 
 
 
